@@ -1,0 +1,13 @@
+bin/
+lib/
+build/
+
+# CMake files
+Makefile
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+cmake_install.cmake
+cmake_uninstall.cmake
+CMakeLists.txt.user
+

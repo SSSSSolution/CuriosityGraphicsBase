@@ -42,4 +42,6 @@ namespace curiosity {
                  x_ * other.y_ - y_ * other.x_);
         return ret;
     }
+
+    }
 }

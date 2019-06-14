@@ -5,6 +5,7 @@
 namespace curiosity {
     namespace graphics {
 
+    /* 对应openGL的着色器对象　*/
     class Shader {
     public:
         Shader(const char *filePath, GLenum type);

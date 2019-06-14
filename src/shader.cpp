@@ -18,9 +18,9 @@ namespace curiosity {
                 return;
 
             // 加载源码
-            std::ifstream shaderFile(shader_);
+            std::ifstream shaderFile(filePath);
             if (!shaderFile) {
-                std::cerr << "can't open shader file: " << filePath << endl;
+                std::cerr << "can't open shader file: " << filePath << std::endl;
                 return;
             }
             srcStream << shaderFile.rdbuf();
@@ -35,7 +35,7 @@ namespace curiosity {
             if (!success) {
                 glGetShaderInfoLog(shader_, 512, NULL, infoLog);
                 std::cout << shader_ << ": shader compile failed: "
-                          << infoLog << endl;
+                          << infoLog << std::endl;
             }
         }
 

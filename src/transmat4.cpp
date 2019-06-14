@@ -8,24 +8,24 @@ namespace curiosity {
     namespace graphics {
         TransMat4::TransMat4() {
             for (int i = 0; i < 16; i++) {
-                data[i] = 0;
+                data_[i] = 0;
             }
         }
 
         TransMat4::TransMat4(float *d) {
-            memcpy(data, d, 16*sizeof(float));
+            memcpy(data_, d, 16*sizeof(float));
         }
 
         TransMat4 TransMat4::operator *(TransMat4 &other) {
             float d[16];
-            const float *od = other.d_;
+            const float *od = other.data_;
 
             for (int j = 0; j < 4; ++j) {
                 for (int i = 0; i < 4; ++i) {
-                    d[j*4+i] = od[j*4+0] * data[0*4+i] +
-                               od[j*4+1] * data[1*4+i] +
-                               od[j*4+2] * data[2*4+i] +
-                               od[j*4+3] * data[3*4+i];
+                    d[j*4+i] = od[j*4+0] * data_[0*4+i] +
+                               od[j*4+1] * data_[1*4+i] +
+                               od[j*4+2] * data_[2*4+i] +
+                               od[j*4+3] * data_[3*4+i];
                 }
             }
             TransMat4 mat(d);
@@ -58,7 +58,7 @@ namespace curiosity {
 
         TransMat4 TransMat4::rotation(float Rx, float Ry, float Rz, float r)
         {
-            float r = RADIANS(r);
+            r = RADIANS(r);
             Vec3 norm = Vec3(Rx, Ry, Rz).normalize();
             float x = norm.x_;
             float y = norm.y_;
@@ -69,7 +69,7 @@ namespace curiosity {
                             x*z*(1-cos(r))+y*sin(r), y*z*(1-cos(r))-x*sin(r), cos(r)+z*z*(1-cos(r)),   0.0f,
                             0.0f,                    0.0f,                    0.0f,                    1.0f };
             TransMat4 mat(d);
-            return d;
+            return mat;
         }
 
         TransMat4 TransMat4::rotation(Vec3 &vec3, float r)
@@ -114,9 +114,9 @@ namespace curiosity {
             TransMat4 mat1(d);
 
             TransMat4 mat2 = TransMat4::identity();
-            mat2.data[12] =  -1.0f * position.x_;
-            mat2.data[13] =  -1.0f * position.y_;
-            mat2.data[14] =  -1.0f * position.z_;
+            mat2.data_[12] =  -1.0f * position.x_;
+            mat2.data_[13] =  -1.0f * position.y_;
+            mat2.data_[14] =  -1.0f * position.z_;
 
             return mat1*mat2;
         }

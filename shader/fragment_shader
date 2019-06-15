@@ -1,0 +1,65 @@
+#version 450 core
+out vec4 FragColor;
+
+// 点的纹理坐标
+in vec2 TexCoords;
+// 点的法向量
+in vec3 Normal;
+// 点的位置
+in vec3 FragPos;
+
+uniform vec3 viewPos;
+
+struct material {
+	sampler2D texture_diffuse1_;
+	sampler2D texture_ambient1_;
+	sampler2D texture_specular1_;
+
+	float shininess_;
+}
+
+// 定向光
+struct DirLight {
+	vec3 direction_;
+
+	vec3 diffuse_;
+	vec3 ambient_;
+	vec3 specular_;
+};
+
+uniform int dirLightNum;
+uniform DirLight dirLight[8];
+
+// 计算定向光共享
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
+
+void main()
+{
+	vec3 result;
+	vec3 norm = normalize(Normal);
+	vec3 viewDir = normalize(viewPos - FragPos);
+
+	for (int i = 0; i < dirLightNum; i++) {
+		result += CalcDirLight(dirLight[i].direction_, norm, viewDir);
+	}
+
+	FragColor = vec4(result, 1.0f);
+}
+
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
+	vec3 lightDir = normalize(-light.direction);
+
+	float diff = max(doc(normal, lightDir), 0.0);
+
+	float reflectDir = reflect(-lightDir, normal);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess_);
+	
+	vec3 ambient = light.ambient_ * vec3(texture(material.ambient1_, TexCoords));
+	vec3 diffuse = light.diffuse_ * diff * vec3(texture(material.diffuse, TexCoords));
+	vec3 specular = light.specular_ * spec * vec3(texture(material.specular_, TexCoords));
+
+	return (ambient + diffuse + specular);
+}
+
+
+

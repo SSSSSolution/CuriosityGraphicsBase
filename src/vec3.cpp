@@ -32,6 +32,11 @@ namespace curiosity {
         return ret;
     }
 
+    Vec3 Vec3::operator *(float v) const {
+        Vec3 ret(x_ * v, y_ * v, z_ * v);
+        return ret;
+    }
+
     float Vec3::dot(const Vec3 &other) const {
         return x_ * other.x_ + y_ * other.y_ + z_ * other.z_;
     }

@@ -9,18 +9,22 @@ namespace curiosity {
         Shader::Shader(const char *filePath, GLenum type)
             : filePath_(filePath), type_(type)
         {
+
+        }
+
+        void Shader::compile() {
             std::string shaderSrc;
             std::stringstream srcStream;
             int success;
             char infoLog[512];
 
-            if (!filePath)
+            if (!filePath_)
                 return;
 
             // 加载源码
-            std::ifstream shaderFile(filePath);
+            std::ifstream shaderFile(filePath_);
             if (!shaderFile) {
-                std::cerr << "can't open shader file: " << filePath << std::endl;
+                std::cerr << "can't open shader file: " << filePath_ << std::endl;
                 return;
             }
             srcStream << shaderFile.rdbuf();
@@ -41,7 +45,7 @@ namespace curiosity {
 
         Shader::~Shader()
         {
-            glDeleteShader(shader_);
+
         }
     }
 }

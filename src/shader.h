@@ -11,6 +11,7 @@ namespace curiosity {
         Shader(const char *filePath, GLenum type);
         ~Shader();
 
+        void compile();
         GLenum getType() { return type_; }
         GLuint getShader() { return shader_; }
 

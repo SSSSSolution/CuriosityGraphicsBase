@@ -7,8 +7,9 @@ using namespace std;
 namespace curiosity {
     namespace graphics {
         TransMat4::TransMat4() {
+            std::cout << "TransMat4" << std::endl;
             for (int i = 0; i < 16; i++) {
-                data_[i] = 0;
+                data_[i] = 0.0f;
             }
         }
 
@@ -84,10 +85,10 @@ namespace curiosity {
                             0.0f,  1.0f/tan(fov/2.0f),      0.0f,              0.0f,
                             0.0f,  0.0f,  (-1.0f*zFar - zNear)/(zNear - zFar), 1.0f,
                             0.0f,  0.0f,  (2*zNear*zFar)/(zNear-zFar),         0.0f };
-    //        float d[16] = { 1.0f/(aspect*tan(fov/2.0f)),    0.0f,     0.0f,    0.0f,
-    //                        0.0f,  1.0f/tan(fov/2.0f),      0.0f,              0.0f,
-    //                        0.0f,  0.0f,  (zFar)/(zFar-zNear), 1.0f,
-    //                        0.0f,  0.0f,  (zNear*zFar)/(zNear-zFar),         0.0f };
+//            float d[16] = { 1.0f/(aspect*tan(fov/2.0f)),    0.0f,     0.0f,    0.0f,
+//                            0.0f,  1.0f/tan(fov/2.0f),      0.0f,              0.0f,
+//                            0.0f,  0.0f,  (zFar)/(zFar-zNear), 1.0f,
+//                            0.0f,  0.0f,  (zNear*zFar)/(zNear-zFar),         0.0f };
             TransMat4 mat(d);
             return mat;
         }

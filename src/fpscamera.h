@@ -2,6 +2,7 @@
 #define GRAPHICS_CAMERA_H
 #include "graphicsglobal.h"
 #include "vec3.h"
+#include "transmat4.h"
 
 namespace curiosity {
     namespace graphics {
@@ -11,6 +12,8 @@ namespace curiosity {
         FPSCamera(Vec3 position = Vec3(0.0f, 0.0f, 0.0f),
                   Vec3 worldUp = Vec3(0.0f, 1.0f, 0.0f),
                   float pitch = 0.0f, float yaw = -90.0f);
+
+        TransMat4 getViewTransMat();
 
         void updateCameraVectors();
 

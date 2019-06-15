@@ -7,7 +7,8 @@ namespace curiosity {
 
     Program::Program()
     {
-        programID_ = glCreateProgram();
+        std::cout << "Program" << std::endl;
+
     }
 
     Program::~Program()
@@ -17,6 +18,8 @@ namespace curiosity {
 
     void Program::linkShaders(vector<Shader> &shaders)
     {
+        programID_ = glCreateProgram();
+
         int success;
         char infoLog[512];
 

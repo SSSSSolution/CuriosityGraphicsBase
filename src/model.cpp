@@ -12,12 +12,14 @@ namespace curiosity {
     }
 
     void Model::draw(Program &program) {
+        program.use();
         for (unsigned int i = 0; i < meshes_.size(); i++) {
             meshes_[i].draw(program);
         }
     }
 
     void Model::loadModel(std::string path) {
+        std::cout << "load model start" << std::endl;
         Assimp::Importer import;
         const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate
                                                | aiProcess_FlipUVs);
@@ -27,8 +29,9 @@ namespace curiosity {
             return;
         }
         directory_ = path.substr(0, path.find_last_of('/'));
-
+        std::cout << "processNode start" << std::endl;
         processNode(scene->mRootNode, scene);
+        std::cout << "load model finished" << std::endl;
     }
 
     void Model::processNode(aiNode *node, const aiScene *scene)
@@ -60,10 +63,14 @@ namespace curiosity {
             } else {
                 vertex.texCoords_ = Vec2(0.0f, 0.0f);
             }
-            v3 = mesh->mTangents[i];
-            vertex.tangent = Vec3(v3.x, v3.y, v3.z);
-            v3 = mesh->mBitangents[i];
-            vertex.bitTangent = Vec3(v3.x, v3.y, v3.z);
+//            if (mesh->mTangents) {
+//                v3 = mesh->mTangents[i];
+//                vertex.tangent = Vec3(v3.x, v3.y, v3.z);
+//            }
+//            if (mesh->mBitangents) {
+//                v3 = mesh->mBitangents[i];
+//                vertex.bitTangent = Vec3(v3.x, v3.y, v3.z);
+//            }
 
             vertices.push_back(vertex);
         }
@@ -75,17 +82,17 @@ namespace curiosity {
             }
         }
 
-        // 网格的材质，用多种材质分别用多种纹理表示
+        // 网格的材质
         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
         vector<Texture> diffuseMap = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
         textures.insert(textures.end(), diffuseMap.begin(), diffuseMap.end());
         vector<Texture> specularMap = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-        textures.insert(specularMap.end(), specularMap.begin(), specularMap.end());
+        textures.insert(textures.end(), specularMap.begin(), specularMap.end());
         vector<Texture> ambientMap = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_ambient");
-        textures.insert(ambientMap.end(), ambientMap.begin(), ambientMap.end());
+        textures.insert(textures.end(), ambientMap.begin(), ambientMap.end());
         vector<Texture> normalMap = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-        textures.insert(normalMap.end(), normalMap.begin(), normalMap.end());
+        textures.insert(textures.end(), normalMap.begin(), normalMap.end());
 
         return Mesh(vertices, indices, textures);
     }

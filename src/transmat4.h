@@ -7,6 +7,7 @@ namespace curiosity {
     namespace graphics {
     /* 提供基本的3D图形学转换矩阵 */
     class TransMat4 {
+    public:
         TransMat4();
         TransMat4(float *d);
 

@@ -5,12 +5,14 @@ using namespace std;
 namespace curiosity {
     namespace graphics {
 
-    Mesh::Mesh(std::vector<Vertex> &vertices,
-               std::vector<GLuint> &indices,
-               std::vector<Texture> &textures)
+    Mesh::Mesh(std::vector<Vertex> vertices,
+               std::vector<GLuint> indices,
+               std::vector<Texture> textures)
         : vertices_(vertices),
           indices_(indices),
           textures_(textures) {
+        std::cout << "mesh: " << vertices_.size() << "," << indices_.size()
+                  << "," << textures_.size() << std::endl;
         setupMesh();
     }
 

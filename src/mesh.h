@@ -29,9 +29,9 @@ namespace curiosity {
     // 网格，openGL draw 一次的单元
     class Mesh {
     public:
-        Mesh(std::vector<Vertex> &vertices,
-             std::vector<GLuint> &indices,
-             std::vector<Texture> &texutres);
+        Mesh(std::vector<Vertex> vertices,
+             std::vector<GLuint> indices,
+             std::vector<Texture> texutres);
         void draw(Program &program);
 
     private:

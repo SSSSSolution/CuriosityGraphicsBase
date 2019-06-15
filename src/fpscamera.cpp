@@ -5,7 +5,12 @@ namespace curiosity {
         FPSCamera::FPSCamera(Vec3 position, Vec3 worldUp, float pitch, float yaw)
             : position_(position), worldUp_(worldUp), pitch_(pitch), yaw_(yaw) ,
               moveSpeed_(1.0f), mouseSensitivity_(0.1f) {
+            std::cout << "FPSCamera" << std::endl;
             updateCameraVectors();
+        }
+
+        TransMat4 FPSCamera::getViewTransMat() {
+            return TransMat4::lookAt(position_, front_, up_);
         }
 
         void FPSCamera::updateCameraVectors() {

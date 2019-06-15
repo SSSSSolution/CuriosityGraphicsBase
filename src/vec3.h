@@ -16,6 +16,8 @@ namespace curiosity {
 
         Vec3 operator *(const Vec3 &other) const;
 
+        Vec3 operator *(float v) const;
+
         float dot(const Vec3 &other) const;
 
         Vec3 cross(const Vec3 &other) const;

@@ -57,5 +57,9 @@ namespace curiosity {
             updateCameraVectors();
         }
 
+        Vec3 FPSCamera::getFront() {
+            return front_;
+        }
+
     }
 }

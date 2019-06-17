@@ -21,8 +21,10 @@ namespace curiosity {
         void linkShaders(std::vector<Shader> &shaders);
         // openGL使用这个程序
         void use();
+        //添加光源
+        void addLightSource(LightSource *ls);
         // 安装光源
-        void installLights(std::vector<LightSource *> lightSources);
+        void installLights();
 
         void setBool(const std::string &name, bool value) const;
         void setInt(const std::string &name, int value) const;
@@ -35,6 +37,7 @@ namespace curiosity {
         unsigned dirLightCount;
         unsigned pointLightCount;
         unsigned spotLightCount;
+        std::vector<LightSource *> lightSources;
     };
 
     }

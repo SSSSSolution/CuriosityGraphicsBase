@@ -151,6 +151,6 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir) {
 	vec3 diffuse = intensity * light.diffuse_ * diff * vec3(texture(material.texture_diffuse1_, TexCoords));
 	vec3 specular = intensity * light.specular_ * spec * vec3(texture(material.texture_specular1_, TexCoords));
 
-	//return ambient + diffuse + specular;
-	return diffuse;
+	return ambient + diffuse + specular;
+	//return diffuse;
 }

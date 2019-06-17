@@ -35,7 +35,16 @@ namespace curiosity {
         }
     }
 
-    void Program::installLights(std::vector<LightSource *> lightSources) {
+    void Program::use()
+    {
+        glUseProgram(programID_);
+    }
+
+    void Program::addLightSource(LightSource *ls) {
+        lightSources.push_back(ls);
+    }
+
+    void Program::installLights() {
         dirLightCount = 0;
         pointLightCount = 0;
         spotLightCount = 0;
@@ -45,10 +54,6 @@ namespace curiosity {
         setInt("dirLightCount", dirLightCount);
         setInt("pointLightCount", pointLightCount);
         setInt("spotLightCount", spotLightCount);
-    }
-    void Program::use()
-    {
-        glUseProgram(programID_);
     }
 
     void Program::setBool(const string &name, bool value) const {

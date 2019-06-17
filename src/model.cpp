@@ -13,6 +13,7 @@ namespace curiosity {
 
     void Model::draw(Program &program) {
         program.use();
+        program.installLights();
         for (unsigned int i = 0; i < meshes_.size(); i++) {
             meshes_[i].draw(program);
         }

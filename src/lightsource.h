@@ -53,8 +53,8 @@ namespace curiosity {
 
     class SpotLight : public LightSource {
     public:
-        SpotLight(Vec3 position = Vec3(0.0f, 7.0f, 3.0f),
-                  Vec3 direction = Vec3(0.0f, 0.0f, 1.0f),
+        SpotLight(Vec3 position = Vec3(0.0f, 14.0f, 5.0f),
+                  Vec3 direction = Vec3(0.0f, 0.0f, -1.0f),
                   Vec3 diffuse = Vec3(1.0f, 1.0f, 1.0f),
                   Vec3 ambient = Vec3(0.2f, 0.2f, 0.2f),
                   Vec3 specular = Vec3(0.5f, 0.5f, 0.5f),

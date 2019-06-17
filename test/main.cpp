@@ -65,14 +65,10 @@ public:
 
         PointLight *pointLight1 = new PointLight;
 
-        SpotLight *spotLight1 = new SpotLight;
-//        lights.push_back(dirLight1);
-//        lights.push_back(dirLight2);
-//        lights.push_back(dirLight3);
-//        lights.push_back(dirLight4);
-//        lights.push_back(pointLight1);
-        lights.push_back(spotLight1);
-        program->installLights(lights);
+        spotLight1 = new SpotLight;
+
+        program->addLightSource(spotLight1);
+//        program->addLightSource(dirLight1);
 
         model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
 
@@ -105,6 +101,8 @@ public:
         program->setTransMat4("view", viewMat);
         program->setTransMat4("project", projectMat);
         program->setVec3("viewPos", camera.position_);
+        spotLight1->position_ = camera.position_;
+        spotLight1->direction_ = camera.getFront();
 
         model->draw(*program);
     }
@@ -148,6 +146,7 @@ private:
 
     Program *program;
     TransMat4 projectMat, modelMat, viewMat;
+    SpotLight *spotLight1;
 };
 
 DECLARE_MAIN(my_application);

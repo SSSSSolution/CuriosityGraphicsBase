@@ -26,6 +26,8 @@ namespace curiosity {
         void processKeyboard(MoveDirection direction);
         void processMouseMove(float xOffset, float yOffset);
 
+        Vec3 getFront();
+
     public:
         Vec3 position_; // 位置
         Vec3 worldUp_;  // 世界坐标系的y轴正方向

@@ -1,4 +1,5 @@
 #include <iostream>
+#include "lightsource.h"
 #include "program.h"
 using namespace std;
 
@@ -34,6 +35,17 @@ namespace curiosity {
         }
     }
 
+    void Program::installLights(std::vector<LightSource *> lightSources) {
+        dirLightCount = 0;
+        pointLightCount = 0;
+        spotLightCount = 0;
+        for (int i = 0; i < lightSources.size(); i++) {
+            lightSources[i]->install(*this);
+        }
+        setInt("dirLightCount", dirLightCount);
+        setInt("pointLightCount", pointLightCount);
+        setInt("spotLightCount", spotLightCount);
+    }
     void Program::use()
     {
         glUseProgram(programID_);

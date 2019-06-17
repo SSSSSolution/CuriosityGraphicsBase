@@ -85,13 +85,13 @@ namespace curiosity {
         // 网格的材质
         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-        vector<Texture> diffuseMap = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+        vector<Texture> diffuseMap = loadMaterialTextures(material, aiTextureType_DIFFUSE, "material.texture_diffuse");
         textures.insert(textures.end(), diffuseMap.begin(), diffuseMap.end());
-        vector<Texture> specularMap = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+        vector<Texture> specularMap = loadMaterialTextures(material, aiTextureType_SPECULAR, "material.texture_specular");
         textures.insert(textures.end(), specularMap.begin(), specularMap.end());
-        vector<Texture> ambientMap = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_ambient");
+        vector<Texture> ambientMap = loadMaterialTextures(material, aiTextureType_AMBIENT, "material.texture_ambient");
         textures.insert(textures.end(), ambientMap.begin(), ambientMap.end());
-        vector<Texture> normalMap = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+        vector<Texture> normalMap = loadMaterialTextures(material, aiTextureType_HEIGHT, "material.texture_normal");
         textures.insert(textures.end(), normalMap.begin(), normalMap.end());
 
         return Mesh(vertices, indices, textures);
@@ -117,7 +117,9 @@ namespace curiosity {
             }
             if (!skip) {
                 Texture texture;
+                std::cout << str.C_Str() << std::endl;
                 texture.id_ = textureFromFile(str.C_Str(), directory_);
+                std::cout << "texture id : " << texture.id_ <<"," << type << std::endl;
                 texture.type_ = typeName;
                 texture.path_ = str.C_Str();
                 textures.push_back(texture);

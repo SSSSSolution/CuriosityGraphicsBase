@@ -3,9 +3,11 @@
 #include "graphicsglobal.h"
 #include "fpscamera.h"
 #include "model.h"
+#include "lightsource.h"
 #include "program.h"
 #include "shader.h"
 #include "transmat4.h"
+
 
 //using namespace sb7;
 using namespace curiosity::graphics;
@@ -51,6 +53,27 @@ public:
         std::cout << "create Program finished" << std::endl;
         program->linkShaders(shaders);
 
+        vector<LightSource *> lights;
+        DirLight *dirLight1 = new DirLight;
+        DirLight *dirLight2 = new DirLight;
+        dirLight2->direction_ = Vec3(0.0f, 0.0f, 1.0f);
+        dirLight2->specular_ = Vec3(1.0f, 1.0f, 1.0f);
+        DirLight *dirLight3 = new DirLight;
+        dirLight3->direction_ = Vec3(0.0f, 1.0f, 0.0f);
+        DirLight *dirLight4 = new DirLight;
+        dirLight4->direction_ = Vec3(0.0f, -1.0f, 0.0f);
+
+        PointLight *pointLight1 = new PointLight;
+
+        SpotLight *spotLight1 = new SpotLight;
+//        lights.push_back(dirLight1);
+//        lights.push_back(dirLight2);
+//        lights.push_back(dirLight3);
+//        lights.push_back(dirLight4);
+//        lights.push_back(pointLight1);
+        lights.push_back(spotLight1);
+        program->installLights(lights);
+
         model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
 
         fov = 45.0f;
@@ -81,6 +104,7 @@ public:
         program->setTransMat4("model", modelMat);
         program->setTransMat4("view", viewMat);
         program->setTransMat4("project", projectMat);
+        program->setVec3("viewPos", camera.position_);
 
         model->draw(*program);
     }

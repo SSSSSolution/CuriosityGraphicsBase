@@ -10,6 +10,7 @@
 namespace curiosity {
     namespace graphics {
 
+    class LightSource;
     /* 对应openGL的program对象 */
     class Program {
     public:
@@ -20,6 +21,8 @@ namespace curiosity {
         void linkShaders(std::vector<Shader> &shaders);
         // openGL使用这个程序
         void use();
+        // 安装光源
+        void installLights(std::vector<LightSource *> lightSources);
 
         void setBool(const std::string &name, bool value) const;
         void setInt(const std::string &name, int value) const;
@@ -27,8 +30,11 @@ namespace curiosity {
         void setTransMat4(const std::string &name, TransMat4 &mat4);
         void setVec3(const std::string &name, Vec3 &vec3);
 
-    private:
+    public:
         GLuint programID_;
+        unsigned dirLightCount;
+        unsigned pointLightCount;
+        unsigned spotLightCount;
     };
 
     }

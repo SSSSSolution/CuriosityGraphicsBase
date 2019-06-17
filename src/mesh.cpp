@@ -26,16 +26,17 @@ namespace curiosity {
             glActiveTexture(GL_TEXTURE0 + i);
             string number;
             string name = textures_[i].type_;
-            if (name == "texture_diffuse") {
+            if (name == "material.texture_diffuse") {
                 number = std::to_string(diffuseNr++);
-            } else if (name == "texture_specular") {
+            } else if (name == "material.texture_specular") {
                 number = std::to_string(specularNr++);
-            } else if (name == "texture_ambient") {
+            } else if (name == "material.texture_ambient") {
                 number = std::to_string(ambientNr++);
-            } else if (name == "texture_normal") {
+            } else if (name == "material.texture_normal") {
                 number = std::to_string(heightNr++);
             }
-            program.setInt((name+number).c_str(), i);
+//            std::cout << name+number << "," << textures_[i].id_ << std::endl;
+            program.setInt((name+number+"_").c_str(), i);
             glBindTexture(GL_TEXTURE_2D, textures_[i].id_);
         }
         glBindVertexArray(VAO_);

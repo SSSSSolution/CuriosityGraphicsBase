@@ -1,3 +1,6 @@
+#ifndef GRAPHICS_GLOBAL_H
+#define GRAPHICS_GLOBAL_H
+
 #include <cmath>
 #include <iostream>
 //#include "glad/glad.h"
@@ -9,3 +12,5 @@
 #define MAX_DIR_LIGHT_NUM       (8)
 #define MAX_POINT_LIGHT_NUM     (64)
 #define MAX_SPOT_LIGHT_NUM      (8)
+
+#endif

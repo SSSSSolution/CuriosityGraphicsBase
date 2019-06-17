@@ -1,4 +1,5 @@
 #include "lightsource.h"
+#include "scene.h"
 #include <string>
 using namespace std;
 
@@ -14,13 +15,13 @@ namespace curiosity {
     }
 
     void DirLight::install(Program &program) {
-        program.dirLightCount++;
-        if (program.dirLightCount > MAX_DIR_LIGHT_NUM) {
-            program.dirLightCount--;
+        program.scene->dirLightCount++;
+        if (program.scene->dirLightCount > MAX_DIR_LIGHT_NUM) {
+            program.scene->dirLightCount--;
             return;
         }
-        program.use();
-        string num = to_string(program.dirLightCount-1);
+//        program.use();
+        string num = to_string(program.scene->dirLightCount-1);
         program.setVec3(string("dirLights[")+num+"].direction_", direction_);
         program.setVec3(string("dirLights[")+num+"].diffuse_", diffuse_);
         program.setVec3(string("dirLights[")+num+"].ambient_", ambient_);
@@ -34,13 +35,13 @@ namespace curiosity {
     }
 
     void PointLight::install(Program &program) {
-        program.pointLightCount++;
-        if (program.pointLightCount > MAX_POINT_LIGHT_NUM) {
-            program.pointLightCount--;
+        program.scene->pointLightCount++;
+        if (program.scene->pointLightCount > MAX_POINT_LIGHT_NUM) {
+            program.scene->pointLightCount--;
             return;
         }
-        program.use();
-        string num = to_string(program.pointLightCount-1);
+//        program.use();
+        string num = to_string(program.scene->pointLightCount-1);
         program.setVec3(string("pointLights[")+num+"].position_", position_);
         program.setFloat(string("pointLights[")+num+"].constant_", constant_);
         program.setFloat(string("pointLights[")+num+"].linear_", linear_);
@@ -57,13 +58,13 @@ namespace curiosity {
     }
 
     void SpotLight::install(Program &program) {
-        program.spotLightCount++;
-        if (program.spotLightCount > MAX_SPOT_LIGHT_NUM) {
-            program.spotLightCount--;
+        program.scene->spotLightCount++;
+        if (program.scene->spotLightCount > MAX_SPOT_LIGHT_NUM) {
+            program.scene->spotLightCount--;
             return;
         }
-        program.use();
-        string num = to_string(program.spotLightCount-1);
+//        program.use();
+        string num = to_string(program.scene->spotLightCount-1);
         program.setVec3(string("spotLights[")+num+"].position_", position_);
         program.setVec3(string("spotLights[")+num+"].direction_", direction_);
         program.setFloat(string("spotLights[")+num+"].cutOff_", std::cos(RADIANS(cutOff_)));

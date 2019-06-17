@@ -1,12 +1,14 @@
 #include <iostream>
 #include "lightsource.h"
 #include "program.h"
+#include "scene.h"
 using namespace std;
 
 namespace curiosity {
     namespace graphics {
 
     Program::Program()
+        : scene(NULL)
     {
         std::cout << "Program" << std::endl;
 
@@ -38,22 +40,6 @@ namespace curiosity {
     void Program::use()
     {
         glUseProgram(programID_);
-    }
-
-    void Program::addLightSource(LightSource *ls) {
-        lightSources.push_back(ls);
-    }
-
-    void Program::installLights() {
-        dirLightCount = 0;
-        pointLightCount = 0;
-        spotLightCount = 0;
-        for (int i = 0; i < lightSources.size(); i++) {
-            lightSources[i]->install(*this);
-        }
-        setInt("dirLightCount", dirLightCount);
-        setInt("pointLightCount", pointLightCount);
-        setInt("spotLightCount", spotLightCount);
     }
 
     void Program::setBool(const string &name, bool value) const {

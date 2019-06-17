@@ -1,5 +1,7 @@
 #include <iostream>
 #include "model.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 using namespace std;
 
@@ -12,8 +14,6 @@ namespace curiosity {
     }
 
     void Model::draw(Program &program) {
-        program.use();
-        program.installLights();
         for (unsigned int i = 0; i < meshes_.size(); i++) {
             meshes_[i].draw(program);
         }

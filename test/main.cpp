@@ -6,6 +6,7 @@
 #include "lightsource.h"
 #include "program.h"
 #include "shader.h"
+#include "scene.h"
 #include "transmat4.h"
 
 
@@ -67,10 +68,10 @@ public:
 
         spotLight1 = new SpotLight;
 
-        program->addLightSource(spotLight1);
-//        program->addLightSource(dirLight1);
+        model = new Model("/home/hunagwei/study/computer_graphics/my_computer_graphics/src/model/nanosuit/nanosuit.obj");
 
-        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
+        scene.addLightSource(spotLight1);
+        scene.addModel(model);
 
         fov = 45.0f;
         camera.moveSpeed_ = 0.25f;
@@ -104,7 +105,7 @@ public:
         spotLight1->position_ = camera.position_;
         spotLight1->direction_ = camera.getFront();
 
-        model->draw(*program);
+        scene.draw(*program);
     }
 
     virtual void onKey(int button, int action)
@@ -147,6 +148,7 @@ private:
     Program *program;
     TransMat4 projectMat, modelMat, viewMat;
     SpotLight *spotLight1;
+    Scene scene;
 };
 
 DECLARE_MAIN(my_application);

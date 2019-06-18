@@ -7,12 +7,11 @@ namespace curiosity {
 
     class DrawableObject {
     public:
-        DrawableObject(Vec3 &position, unsigned int length);
-        virtual void drawEnable(bool b) = 0;
+        DrawableObject(const Vec3 &position);
+        virtual void draw() = 0;
 
     protected:
         Vec3 position_;
-        unsigned int length_;
     };
 
     }

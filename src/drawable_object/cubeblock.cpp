@@ -18,6 +18,12 @@ namespace curiosity {
             }
         }
         initSurface();
+        glGenVertexArrays(1, &VAO_);
+        glBindVertexArray(VAO_);
+
+        glEnableVertexArrayAttrib(0);
+        glVertexAttribPointer(0, 1, GL_UNSIGNED_INT, GL_FALSE,
+                              sizeof()
     }
 
     void CubeBlock::clear() {

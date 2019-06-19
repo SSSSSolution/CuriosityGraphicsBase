@@ -5,6 +5,7 @@
 #include "model.h"
 #include "drawableobject.h"
 #include "program.h"
+#include <map>
 #define BLOCK_SIZE  (1<<22) // 4M
 #define XSIZE       (128)
 #define YSIZE       (128)
@@ -19,7 +20,10 @@ namespace curiosity {
         ~CubeBlock();
 
         struct CubeInfo {
-            Vec3 position;
+            CubeInfo(const Vec3 &position)
+                : position_(position) {
+            }
+            Vec3 position_; // 方块的x, y, z
         };
         void init();
         void clear();
@@ -39,7 +43,7 @@ namespace curiosity {
          */
         void initSurface();
         void setSurface(int x, int y, int z, bool b);
-        void isSurface(int x, int y, int z);
+        bool isSurface(int x, int y, int z);
 
     private:
         /* 存放连续的方块信息，每个方块信息包含
@@ -49,7 +53,8 @@ namespace curiosity {
          * 现在为每个方块分配8个字节，共有128*128*32个方块
          */
         void *cubeBuff_;
-        GLuint VAO_, VBO_;
+        GLuint VAO_, VBO_, positionBuffer_;
+        std::map<unsigned int, CubeInfo *> drawCubes;
     };
     }
 }

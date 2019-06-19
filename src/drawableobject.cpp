@@ -3,7 +3,7 @@
 namespace curiosity {
     namespace graphics {
 
-    DrawableObject::DrawableObject(Vec3 &position)
+    DrawableObject::DrawableObject(const Vec3 &position)
         :   position_(position) {
     }
 

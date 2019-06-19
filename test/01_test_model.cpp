@@ -54,6 +54,7 @@ public:
         std::cout << "create Program finished" << std::endl;
         program->linkShaders(shaders);
 
+
         vector<LightSource *> lights;
         DirLight *dirLight1 = new DirLight;
         DirLight *dirLight2 = new DirLight;

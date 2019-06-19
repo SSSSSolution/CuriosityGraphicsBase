@@ -42,8 +42,8 @@ public:
     {
         char *root = getenv("PROJECT_ROOT");
         std::string rootDir(root);
-        std::string vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/vertex_shader");
-        std::string fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/fragment_shader");
+        std::string vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/cubeblock_vertex_shader");
+        std::string fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/cubeblock_fragment_shader");
         Shader vertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
         Shader fragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
         vertexShader.compile();
@@ -51,9 +51,24 @@ public:
         vector<Shader> shaders;
         shaders.push_back(vertexShader);
         shaders.push_back(fragmentShader);
-        program = new Program;
+        cubeProgram = new Program;
+        cubeProgram->use();
         std::cout << "create Program finished" << std::endl;
-        program->linkShaders(shaders);
+        cubeProgram->linkShaders(shaders);
+
+        vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/vertex_shader");
+        fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/fragment_shader");
+        Shader modelVertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
+        Shader modelfragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
+        modelVertexShader.compile();
+        modelfragmentShader.compile();
+        vector<Shader> modelShaders;
+        modelShaders.push_back(modelVertexShader);
+        modelShaders.push_back(modelfragmentShader);
+        modelProgram = new Program;
+        modelProgram->use();
+        std::cout << "create Program finished" << std::endl;
+        modelProgram->linkShaders(modelShaders);
 
 
 //        vector<LightSource *> lights;
@@ -68,19 +83,32 @@ public:
 
 //        PointLight *pointLight1 = new PointLight;
 
-//        spotLight1 = new SpotLight;
+        spotLight1 = new SpotLight;
 
-//        model = new Model("/home/hunagwei/study/computer_graphics/my_computer_graphics/src/model/nanosuit/nanosuit.obj");
+        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
 
-//        scene.addLightSource(spotLight1);
-//        scene.addModel(model);
+        scene.addLightSource(spotLight1);
+        scene.addModel(model);
 
         fov = 45.0f;
         camera.moveSpeed_ = 0.25f;
         camera.mouseSensitivity_ = 0.025f;
 
+        cubeBlock1.init();
+        cubeBlock1.position_ = Vec3(0.0f, 0.0f, 0.0f);
+        cubeBlock2.init();
+        cubeBlock2.position_ = Vec3(-128.0f, 0.0f, 0.0f);
+        cubeBlock3.init();
+        cubeBlock3.position_ = Vec3(-128.0f, 0.0f, -128.0f);
+        cubeBlock4.init();
+        cubeBlock4.position_ = Vec3(0.0f, 0.0f, -128.0f);
+//        cubeBlock5.init();
+//        cubeBlock6.init();
+
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+//        glCullFace(GL_BACK);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
 
@@ -98,16 +126,38 @@ public:
         projectMat = TransMat4::projection(
                     (float)(info.windowWidth)/(float)(info.windowHeight),
                      fov, 0.1f, 1000.0f);
-        modelMat = TransMat4::translation(0.0f, 0.0f, 0.0f);
 
-        program->setTransMat4("model", modelMat);
-        program->setTransMat4("view", viewMat);
-        program->setTransMat4("project", projectMat);
-        program->setVec3("viewPos", camera.position_);
+        modelProgram->use();
+        modelProgram->setTransMat4("view", viewMat);
+        modelProgram->setTransMat4("project", projectMat);
+        modelMat = TransMat4::translation(0.0f, 0.0f, 0.0f);
+        modelProgram->setTransMat4("model", modelMat);
+        modelProgram->setVec3("viewPos", camera.position_);
         spotLight1->position_ = camera.position_;
         spotLight1->direction_ = camera.getFront();
+        scene.draw(*modelProgram);
 
-//        scene.draw(*program);
+        cubeProgram->use();
+        cubeProgram->setTransMat4("view", viewMat);
+        cubeProgram->setTransMat4("project", projectMat);
+
+        modelMat = TransMat4::translation(cubeBlock1.position_);
+        cubeProgram->setTransMat4("model", modelMat);
+        cubeBlock1.draw(*cubeProgram);
+
+        modelMat = TransMat4::translation(cubeBlock2.position_);
+        cubeProgram->setTransMat4("model", modelMat);
+        cubeBlock2.draw(*cubeProgram);
+
+        modelMat = TransMat4::translation(cubeBlock3.position_);
+        cubeProgram->setTransMat4("model", modelMat);
+        cubeBlock3.draw(*cubeProgram);
+
+        modelMat = TransMat4::translation(cubeBlock4.position_);
+        cubeProgram->setTransMat4("model", modelMat);
+        cubeBlock4.draw(*cubeProgram);
+
+
     }
 
     virtual void onKey(int button, int action)
@@ -147,10 +197,11 @@ private:
     float fov;
     Model *model;
 
-    Program *program;
+    Program *cubeProgram, *modelProgram;
     TransMat4 projectMat, modelMat, viewMat;
     SpotLight *spotLight1;
     Scene scene;
+    CubeBlock cubeBlock1,cubeBlock2, cubeBlock3, cubeBlock4, cubeBlock5, cubeBlock6;
 };
 
 DECLARE_MAIN(my_application);

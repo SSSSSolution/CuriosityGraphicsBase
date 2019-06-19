@@ -8,8 +8,8 @@
 #include <map>
 #define BLOCK_SIZE  (1<<22) // 4M
 #define XSIZE       (128)
-#define YSIZE       (128)
-#define ZSIZE       (32)
+#define YSIZE       (32)
+#define ZSIZE       (128)
 #define DATA_SIZE   (8)
 
 namespace curiosity {
@@ -17,7 +17,7 @@ namespace curiosity {
     class CubeBlock : public DrawableObject {
     public:
         CubeBlock(Vec3 position = Vec3(0.0f, 0.0f, 0.0f));
-        ~CubeBlock();
+        ~CubeBlock() {}
 
         struct CubeInfo {
             CubeInfo(const Vec3 &position)
@@ -54,6 +54,7 @@ namespace curiosity {
          */
         void *cubeBuff_;
         GLuint VAO_, VBO_, positionBuffer_;
+        GLuint textureID;
         std::map<unsigned int, CubeInfo *> drawCubes;
     };
     }

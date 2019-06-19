@@ -69,7 +69,7 @@ public:
 
         spotLight1 = new SpotLight;
 
-        model = new Model("/home/hunagwei/study/computer_graphics/my_computer_graphics/src/model/nanosuit/nanosuit.obj");
+        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
 
         scene.addLightSource(spotLight1);
         scene.addModel(model);

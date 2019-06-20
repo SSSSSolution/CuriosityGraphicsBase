@@ -78,6 +78,19 @@ namespace curiosity {
             return rotation(vec3.x_, vec3.y_, vec3.z_, r);
         }
 
+        TransMat4 TransMat4::scale(float Rx, float Ry, float Rz) {
+            float d[16] = { Rx,     0.0f,   0.0f,   0.0f,
+                            0.0f,   Ry,     0.0f,   0.0f,
+                            0.0f,   0.0f,   Rz,     0.0f,
+                            0.0f,   0.0f,   0.0f,   1.0f };
+            TransMat4 mat(d);
+            return mat;
+        }
+
+        TransMat4 TransMat4::scale(Vec3 &vec3) {
+            return scale(vec3.x_, vec3.y_, vec3.z_);
+        }
+
         TransMat4 TransMat4::projection(float aspect, float fov, float zNear, float zFar)
         {
             fov = RADIANS(fov);

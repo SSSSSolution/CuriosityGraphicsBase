@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "graphicsglobal.h"
 #include "fpscamera.h"
 #include "model.h"
@@ -10,56 +11,13 @@
 #include "transmat4.h"
 #include "stb_image.h"
 #include "drawable_object/cubeblock.h"
+#include "drawable_object/skybox.h"
 
 
 //using namespace sb7;
 using namespace curiosity::graphics;
 using namespace std;
 
-float skyboxVertices[] = {
-    // positions
-    -1.0f,  1.0f, -1.0f,
-    -1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-     1.0f,  1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
-
-    -1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f,  1.0f, -1.0f,
-    -1.0f,  1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,
-
-     1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-
-    -1.0f, -1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f,
-    -1.0f, -1.0f,  1.0f,
-
-    -1.0f,  1.0f, -1.0f,
-     1.0f,  1.0f, -1.0f,
-     1.0f,  1.0f,  1.0f,
-     1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f,  1.0f,
-    -1.0f,  1.0f, -1.0f,
-
-    -1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f, -1.0f,
-     1.0f, -1.0f, -1.0f,
-    -1.0f, -1.0f,  1.0f,
-     1.0f, -1.0f,  1.0f
-};
 class my_application : public sb7::application {
 public:
     virtual void init() {
@@ -87,8 +45,8 @@ public:
     {
         char *root = getenv("PROJECT_ROOT");
         std::string rootDir(root);
-        std::string vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/cubeblock_vertex_shader");
-        std::string fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/cubeblock_fragment_shader");
+        std::string vertexShaderPath = shaderDir() +"/cubeblock_vertex_shader";
+        std::string fragmentShaderPath = shaderDir() +"/cubeblock_fragment_shader";
         Shader vertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
         Shader fragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
         vertexShader.compile();
@@ -101,8 +59,8 @@ public:
         std::cout << "create Program finished" << std::endl;
         cubeProgram->linkShaders(shaders);
 
-        vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/vertex_shader");
-        fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/fragment_shader");
+        vertexShaderPath = shaderDir() +"/vertex_shader";
+        fragmentShaderPath =shaderDir() +"/fragment_shader";
         Shader modelVertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
         Shader modelfragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
         modelVertexShader.compile();
@@ -117,7 +75,7 @@ public:
 
         spotLight1 = new SpotLight;
 
-        model = new Model("/home/hunagwei/study/computer_graphics/my_computer_graphics/src/model/nanosuit/nanosuit.obj");
+        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
 
         scene.addLightSource(spotLight1);
         scene.addModel(model);
@@ -128,25 +86,31 @@ public:
 
         cubeBlock1.init();
         cubeBlock1.position_ = Vec3(0.0f, 0.0f, 0.0f);
+        cubeBlock2.init();
+        cubeBlock2.position_ = Vec3(-128.0f, 0.0f, 0.0f);
+        cubeBlock3.init();
+        cubeBlock3.position_ = Vec3(-128.0f, 0.0f, -128.0f);
+        cubeBlock4.init();
+        cubeBlock4.position_ = Vec3(0.0f, 0.0f, -128.0f);
+
 
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
 //        glEnable(GL_CULL_FACE);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-        // 加载skybox
-        vector<std::string> faces {
-            "/home/hunagwei/study/computer_graphics/my_computer_graphics/CuriosityGraphicsBase/texture/skybox/skybox1/right.jpg",
-            "/home/hunagwei/study/computer_graphics/my_computer_graphics/CuriosityGraphicsBase/texture/skybox/skybox1/left.jpg",
-            "/home/hunagwei/study/computer_graphics/my_computer_graphics/CuriosityGraphicsBase/texture/skybox/skybox1/top.jpg",
-            "/home/hunagwei/study/computer_graphics/my_computer_graphics/CuriosityGraphicsBase/texture/skybox/skybox1/bottom.jpg",
-            "/home/hunagwei/study/computer_graphics/my_computer_graphics/CuriosityGraphicsBase/texture/skybox/skybox1/front.jpg",
-            "/home/hunagwei/study/computer_graphics/my_computer_graphics/CuriosityGraphicsBase/texture/skybox/skybox1/back.jpg"
-        };
-        cubemapTexture = loadCubemap(faces);
 
-        vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/skybox_vertex_shader");
-        fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/skybox_fragment_shader");
+        std::vector<string> paths{
+            skyboxDir() + "/skybox1/right.jpg",
+            skyboxDir() + "/skybox1/left.jpg",
+            skyboxDir() + "/skybox1/top.jpg",
+            skyboxDir() + "/skybox1/bottom.jpg",
+            skyboxDir() + "/skybox1/front.jpg",
+            skyboxDir() + "/skybox1/back.jpg"
+        };
+        skybox = Skybox::create(paths);
+        vertexShaderPath = shaderDir() +"/skybox_vertex_shader";
+        fragmentShaderPath = shaderDir() +"/skybox_fragment_shader";
         Shader skyboxVertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
         Shader skyboxfragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
         skyboxVertexShader.compile();
@@ -158,18 +122,6 @@ public:
         skyboxProgram->use();
         skyboxProgram->linkShaders(skyboxShaders);
         std::cout << "create Program finished" << std::endl;
-
-        glGenBuffers(1, &skyboxVBO_);
-        glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO_);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float)*36*3,
-                     skyboxVertices, GL_STATIC_DRAW);
-
-        glGenVertexArrays(1, &skyboxVAO_);
-        glBindVertexArray(skyboxVAO_);
-
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float),
-                              (void *)0);
 
     }
 
@@ -189,12 +141,7 @@ public:
                      fov, 0.1f, 1000.0f);
 
         // 绘制skybox
-        glDepthMask(GL_FALSE);
-//        glDepthFunc(GL_LEQUAL);
         skyboxProgram->use();
-        glBindVertexArray(skyboxVAO_);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 
         skyboxViewMat = viewMat;
         skyboxViewMat.data_[12] = 0;
@@ -204,17 +151,16 @@ public:
         skyboxProgram->setTransMat4("view", skyboxViewMat);
         skyboxProgram->setTransMat4("project", projectMat);
         skyboxProgram->setInt("skybox", 0);
+        skybox->draw(*skyboxProgram);
 
-        glEnableVertexAttribArray(0);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glDepthMask(GL_TRUE);
-//        glDepthFunc(GL_LESS);
 
 
         modelProgram->use();
         modelProgram->setTransMat4("view", viewMat);
         modelProgram->setTransMat4("project", projectMat);
-        modelMat = TransMat4::translation(0.0f, 0.0f, 0.0f);
+        modelMat = TransMat4::translation(0.0f, 0.5f, 0.0f);
+        TransMat4 scaleMat = TransMat4::scale(0.2f, 0.2f, 0.2f);
+        modelMat =  modelMat * scaleMat;
         modelProgram->setTransMat4("model", modelMat);
         modelProgram->setVec3("viewPos", camera.position_);
         spotLight1->position_ = camera.position_;
@@ -228,6 +174,18 @@ public:
         modelMat = TransMat4::translation(cubeBlock1.position_);
         cubeProgram->setTransMat4("model", modelMat);
         cubeBlock1.draw(*cubeProgram);
+
+        modelMat = TransMat4::translation(cubeBlock2.position_);
+        cubeProgram->setTransMat4("model", modelMat);
+        cubeBlock2.draw(*cubeProgram);
+
+        modelMat = TransMat4::translation(cubeBlock3.position_);
+        cubeProgram->setTransMat4("model", modelMat);
+        cubeBlock3.draw(*cubeProgram);
+
+        modelMat = TransMat4::translation(cubeBlock4.position_);
+        cubeProgram->setTransMat4("model", modelMat);
+        cubeBlock4.draw(*cubeProgram);
     }
 
     virtual void onKey(int button, int action)
@@ -261,35 +219,6 @@ public:
         camera.processMouseMove(xoffset, yoffset);
     }
 
-    unsigned int loadCubemap(vector<std::string> faces) {
-        std::cout << __func__ << std::endl;
-        GLuint textureID;
-        glGenTextures(1, &textureID);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-        int width, height, nrChannels;
-        for (GLuint i = 0; i < faces.size(); i++) {
-            unsigned char *data = stbi_load(faces[i].c_str(), &width, &height,
-                                            &nrChannels, 0);
-            if (data) {
-                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i,
-                             0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-            } else {
-                std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
-            }
-            stbi_image_free(data);
-        }
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-        std::cout << __func__ << "finished" << std::endl;
-        return textureID;
-    }
-
-
 private:
     FPSCamera camera;
     float fov;
@@ -302,6 +231,7 @@ private:
     CubeBlock cubeBlock1,cubeBlock2, cubeBlock3, cubeBlock4, cubeBlock5, cubeBlock6;
     GLuint cubemapTexture;
     GLuint skyboxVAO_, skyboxVBO_;
+    std::shared_ptr<Skybox> skybox;
 };
 
 DECLARE_MAIN(my_application);

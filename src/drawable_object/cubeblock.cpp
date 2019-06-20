@@ -63,7 +63,7 @@ namespace curiosity {
         // 暂时先在这创建纹理
         glGenTextures(1, &textureID);
         int width, height, nrComponents;
-        unsigned char *data = stbi_load("/home/hunagwei/study/computer_graphics/my_computer_graphics/CuriosityGraphicsBase/texture/container2.png",
+        unsigned char *data = stbi_load("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/media/container2.png",
                                         &width, &height, &nrComponents, 0);
         if (data) {
             GLenum format;

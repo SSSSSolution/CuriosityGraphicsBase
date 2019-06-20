@@ -78,6 +78,7 @@ void main()
 {
 	vec3 result = vec3(0.0f, 0.0f, 0.0f);
 	vec3 norm = normalize(Normal);
+	//vec3 norm = normalize(texture(material.texture_normal1_, TexCoords).rgb);
 	vec3 viewDir = normalize(viewPos - FragPos);
 
 	for (int i = 0; i < dirLightCount; i++) {

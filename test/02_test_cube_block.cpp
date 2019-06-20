@@ -40,10 +40,8 @@ public:
 
     virtual void startup()
     {
-        char *root = getenv("PROJECT_ROOT");
-        std::string rootDir(root);
-        std::string vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/cubeblock_vertex_shader");
-        std::string fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/cubeblock_fragment_shader");
+        std::string vertexShaderPath = shaderDir() +"/cubeblock_vertex_shader";
+        std::string fragmentShaderPath = shaderDir() +"/cubeblock_fragment_shader";
         Shader vertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
         Shader fragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
         vertexShader.compile();
@@ -56,8 +54,8 @@ public:
         std::cout << "create Program finished" << std::endl;
         cubeProgram->linkShaders(shaders);
 
-        vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/vertex_shader");
-        fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/fragment_shader");
+        vertexShaderPath = shaderDir() +"/vertex_shader";
+        fragmentShaderPath = shaderDir() +"/fragment_shader";
         Shader modelVertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
         Shader modelfragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
         modelVertexShader.compile();
@@ -85,7 +83,7 @@ public:
 
         spotLight1 = new SpotLight;
 
-        model = new Model("/home/hunagwei/study/computer_graphics/my_computer_graphics/src/model/nanosuit/nanosuit.obj");
+        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
 
         scene.addLightSource(spotLight1);
         scene.addModel(model);

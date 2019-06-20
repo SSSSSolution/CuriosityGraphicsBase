@@ -21,6 +21,9 @@ namespace curiosity {
         static TransMat4 rotation(float Rx, float Ry, float Rz, float r);
         static TransMat4 rotation(Vec3 &vec3, float r);
 
+        static TransMat4 scale(float Rx, float Ry, float Rz);
+        static TransMat4 scale(Vec3 &vec3);
+
         static TransMat4 projection(float aspect, float fov, float zNear, float zFar);
 
         static TransMat4 lookAt(const Vec3 &position, const Vec3 &front, const Vec3 &up);

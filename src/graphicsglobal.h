@@ -2,6 +2,7 @@
 #define GRAPHICS_GLOBAL_H
 
 #include <cmath>
+#include <string>
 #include <iostream>
 //#include "glad/glad.h"
 #include "sb7_include/sb7.h"
@@ -9,8 +10,20 @@
 
 #define RADIANS(r)              (r*3.14159f/180.0f)
 
-#define MAX_DIR_LIGHT_NUM       (8)
-#define MAX_POINT_LIGHT_NUM     (64)
-#define MAX_SPOT_LIGHT_NUM      (8)
+namespace curiosity {
+    namespace graphics {
+
+    std::string rootDir();
+
+    std::string textureDir();
+
+    std::string skyboxDir();
+
+    std::string shaderDir();
+
+    std::string modelDir();
+
+    }
+}
 
 #endif

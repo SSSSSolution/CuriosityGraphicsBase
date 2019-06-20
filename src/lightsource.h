@@ -4,6 +4,10 @@
 #include "vec3.h"
 #include "program.h"
 
+#define MAX_DIR_LIGHT_NUM       (8)
+#define MAX_POINT_LIGHT_NUM     (64)
+#define MAX_SPOT_LIGHT_NUM      (8)
+
 namespace curiosity {
     namespace graphics {
 

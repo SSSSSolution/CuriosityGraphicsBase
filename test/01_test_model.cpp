@@ -39,10 +39,10 @@ public:
 
     virtual void startup()
     {
-        char *root = getenv("PROJECT_ROOT");
-        std::string rootDir(root);
-        std::string vertexShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/vertex_shader");
-        std::string fragmentShaderPath = rootDir + std::string("/CuriosityGraphicsBase/shader/fragment_shader");
+        std::cout << "=====================" << std::endl;
+        std::string vertexShaderPath = shaderDir() +"/vertex_shader";
+        std::string fragmentShaderPath = shaderDir() +"/fragment_shader";
+        std::cout << "vertxShaderPath" << vertexShaderPath << std::endl;
         Shader vertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
         Shader fragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
         vertexShader.compile();
@@ -88,7 +88,7 @@ public:
         static double lastTime = currentTime;
         double deltaTime = currentTime - lastTime;
         lastTime = currentTime;
-//        std::cout << "frame time: " << deltaTime << "s" << std::endl;
+        std::cout << "frame time: " << deltaTime << "s" << std::endl;
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

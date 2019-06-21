@@ -16,50 +16,54 @@ namespace curiosity {
 
     Program::~Program()
     {
-        glDeleteProgram(programID_);
+        glDeleteProgram(id);
     }
 
     void Program::linkShaders(vector<Shader> &shaders)
     {
-        programID_ = glCreateProgram();
+        id = glCreateProgram();
 
         int success;
         char infoLog[512];
 
         for (int i = 0; i < shaders.size(); ++i) {
-            glAttachShader(programID_, shaders[i].getShader());
+            glAttachShader(id, shaders[i].getShader());
         }
-        glLinkProgram(programID_);
-        glGetProgramiv(programID_, GL_LINK_STATUS, &success);
+        glLinkProgram(id);
+        glGetProgramiv(id, GL_LINK_STATUS, &success);
         if (!success) {
-            glGetProgramInfoLog(programID_, 512, NULL, infoLog);
+            glGetProgramInfoLog(id, 512, NULL, infoLog);
             std::cout << "Program link error: " << infoLog << std::endl;
+        }
+
+        for (int i = 0; i < shaders.size(); ++i) {
+            glDeleteShader(shaders[i].shader);
         }
     }
 
     void Program::use()
     {
-        glUseProgram(programID_);
+        glUseProgram(id);
     }
 
     void Program::setBool(const string &name, bool value) const {
-        glUniform1i(glGetUniformLocation(programID_, name.c_str()), (int)value);
+        glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
     }
 
     void Program::setInt(const string &name, int value) const {
-        glUniform1i(glGetUniformLocation(programID_, name.c_str()), value);
+        glUniform1i(glGetUniformLocation(id, name.c_str()), value);
     }
 
     void Program::setFloat(const string &name, float value) const {
-        glUniform1f(glGetUniformLocation(programID_, name.c_str()), value);
+        glUniform1f(glGetUniformLocation(id, name.c_str()), value);
     }
 
     void Program::setTransMat4(const string &name, TransMat4 &mat4) {
-        glUniformMatrix4fv(glGetUniformLocation(programID_, name.c_str()), 1, GL_FALSE, mat4.data_);
+        glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, mat4.data_);
     }
 
     void Program::setVec3(const string &name, Vec3 &vec3) {
-        glUniform3f(glGetUniformLocation(programID_, name.c_str()), vec3.x_, vec3.y_, vec3.z_);
+        glUniform3f(glGetUniformLocation(id, name.c_str()), vec3.x_, vec3.y_, vec3.z_);
     }
 
     }

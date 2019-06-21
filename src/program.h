@@ -30,7 +30,7 @@ namespace curiosity {
         void setVec3(const std::string &name, Vec3 &vec3);
 
     public:
-        GLuint programID_;
+        GLuint id;
         Scene *scene;
     };
 

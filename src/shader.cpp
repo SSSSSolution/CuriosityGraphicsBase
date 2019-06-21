@@ -31,14 +31,14 @@ namespace curiosity {
             shaderFile.close();
             shaderSrc = srcStream.str();
             // 编译源码
-            shader_ = glCreateShader(type_);
+            shader = glCreateShader(type_);
             const char * shaderCode = shaderSrc.c_str();
-            glShaderSource(shader_, 1, &shaderCode, NULL);
-            glCompileShader(shader_);
-            glGetShaderiv(shader_, GL_COMPILE_STATUS, &success);
+            glShaderSource(shader, 1, &shaderCode, NULL);
+            glCompileShader(shader);
+            glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
             if (!success) {
-                glGetShaderInfoLog(shader_, 512, NULL, infoLog);
-                std::cout << shader_ << ": shader compile failed: "
+                glGetShaderInfoLog(shader, 512, NULL, infoLog);
+                std::cout << shader << ": shader compile failed: "
                           << infoLog << std::endl;
             }
         }

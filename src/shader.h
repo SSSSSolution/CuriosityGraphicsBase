@@ -13,12 +13,12 @@ namespace curiosity {
 
         void compile();
         GLenum getType() { return type_; }
-        GLuint getShader() { return shader_; }
+        GLuint getShader() { return shader; }
 
-    private:
+    public:
         const char *filePath_;
         GLenum type_;
-        GLuint shader_;
+        GLuint shader;
     };
 
     }

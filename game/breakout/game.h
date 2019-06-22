@@ -1,7 +1,7 @@
 #ifndef BREAKOUT_H
 #define BREAKOUT_H
-
 #include "graphicsglobal.h"
+#include "spriterender.h"
 
 namespace curiosity {
     namespace breakout {
@@ -18,14 +18,16 @@ namespace curiosity {
         GLboolean Keys[1024];
         GLuint width, height;
 
-        Game(GLuint width, GLuint height) {}
-        ~Game() {}
+        Game(GLuint width, GLuint height);
+        ~Game();
 
-        void Init() {}
+        void Init();
 
-        void ProcessInput(GLfloat dt) {}
-        void Update(GLfloat dt) {}
-        void Render() {}
+        void ProcessInput(GLfloat dt);
+        void Update(GLfloat dt);
+        void Render();
+    private:
+        curiosity::graphics::SpriteRender *renderer;
     };
 
     }

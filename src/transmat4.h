@@ -26,6 +26,8 @@ namespace curiosity {
 
         static TransMat4 projection(float aspect, float fov, float zNear, float zFar);
 
+        static TransMat4 ortho(float left, float right, float bottom, float top, float zNear, float zFar);
+
         static TransMat4 lookAt(const Vec3 &position, const Vec3 &front, const Vec3 &up);
 
     public:

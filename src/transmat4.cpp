@@ -106,6 +106,18 @@ namespace curiosity {
             return mat;
         }
 
+        TransMat4 TransMat4::ortho(float left, float right, float bottom, float top, float zNear, float zFar) {
+            float d[16] = {
+                2.0f / (right-left),        0.0f,                       0.0f,                       0.0f,
+                0.0f,                       2.0f/(top-bottom),          0.0f,                       0.0f,
+                0.0f,                       0.0f,                       -2.0f/(zFar-zNear),         0.0f,
+                (right+left)/(left-right),  (top+bottom)/(bottom-top),  (zFar+zNear)/(zNear-zFar),  1.0f
+            };
+
+            TransMat4 mat(d);
+            return mat;
+        }
+
         TransMat4 TransMat4::lookAt(const Vec3 &position, const Vec3 &front, const Vec3 &up)
         {
             Vec3 zaxis = front.normalize();

@@ -21,7 +21,7 @@ namespace curiosity {
         static Texture2D loadTexture(const GLchar *file, GLboolean  alpha,
                                      std::string name);
 
-        static Texture2D getTexture2D(std::string name);
+        static Texture2D &getTexture2D(std::string name);
 
         static void clear();
 

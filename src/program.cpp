@@ -16,12 +16,13 @@ namespace curiosity {
 
     Program::~Program()
     {
-        glDeleteProgram(id);
+//        glDeleteProgram(id);
     }
 
     void Program::linkShaders(vector<Shader> &shaders)
     {
         id = glCreateProgram();
+        std::cout << "program id: " << id << std::endl;
 
         int success;
         char infoLog[512];

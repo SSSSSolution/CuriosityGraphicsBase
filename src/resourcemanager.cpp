@@ -25,7 +25,7 @@ namespace curiosity {
         return textures[name];
     }
 
-    Texture2D ResourceManager::getTexture2D(string name) {
+    Texture2D &ResourceManager::getTexture2D(string name) {
         return textures[name];
     }
 

@@ -41,11 +41,17 @@ public:
 
     virtual void startup()
     {
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         BreakOut.Init();
     }
 
     virtual void render(double currentTime)
     {
+        deltaTime = currentTime - lastFrame;
+        lastFrame = currentTime;
+//        std::cout << deltaTime << std::endl;
         BreakOut.ProcessInput(deltaTime);
         BreakOut.Update(deltaTime);
 
@@ -56,7 +62,14 @@ public:
 
     virtual void onKey(int button, int action)
     {
-
+        if (button == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, true);
+        if (button >= 0 && button < 1024) {
+            if (action == GLFW_PRESS)
+                BreakOut.keys[button] = GL_TRUE;
+            else if (action == GLFW_RELEASE)
+                BreakOut.keys[button] = GL_FALSE;
+        }
     }
 
     virtual void onMouseMove(int x, int y)

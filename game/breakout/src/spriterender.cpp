@@ -5,7 +5,7 @@
 namespace curiosity {
     namespace graphics {
 
-    SpriteRender::SpriteRender(Program &p) {
+    SpriteRender::SpriteRender(const Program &p) {
         program = p;
         initRenderData();
     }
@@ -59,8 +59,6 @@ namespace curiosity {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     }
-
-
 
     }
 }

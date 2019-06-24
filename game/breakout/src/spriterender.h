@@ -10,7 +10,7 @@ namespace curiosity {
 
     class SpriteRender {
     public:
-        SpriteRender(Program &program);
+        SpriteRender(const Program &program);
         ~SpriteRender();
 
         void drawSprite(Texture2D &texture, Vec2 position,

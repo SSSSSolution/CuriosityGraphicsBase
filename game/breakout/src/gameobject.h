@@ -12,10 +12,9 @@ namespace curiosity {
     class GameObject {
     public:
         GameObject();
-        GameObject(Vec2 pos, Vec2 size, Texutre2D sprite,
+        GameObject(Vec2 pos, Vec2 size, Texture2D sprite,
                    Vec3 color = Vec3(1.0f,1.0f, 1.0f), Vec2 velocity= Vec2(0.0f, 0.0f));
 
-    protected:
         virtual void draw(SpriteRender &render);
     public:
         Vec2 position, size, velocity;

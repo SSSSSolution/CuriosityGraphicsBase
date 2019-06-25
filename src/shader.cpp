@@ -22,9 +22,10 @@ namespace curiosity {
                 return;
 
             // 加载源码
-            std::ifstream shaderFile(filePath_);
+            std::string path = shaderDir() + filePath_;
+            std::ifstream shaderFile(path.c_str());
             if (!shaderFile) {
-                std::cerr << "can't open shader file: " << filePath_ << std::endl;
+                std::cerr << "can't open shader file: " << path << std::endl;
                 return;
             }
             srcStream << shaderFile.rdbuf();

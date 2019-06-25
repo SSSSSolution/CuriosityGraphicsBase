@@ -7,7 +7,7 @@ using namespace std;
 
 const Vec2 PLAYER_SIZE(100,20);
 const float PLAYER_VELOCITY(500.0f);
-const Vec2 INITIAL_BALL_VELOSITY(100.0f, -150.0f);
+const Vec2 INITIAL_BALL_VELOSITY(200.0f, -350.0f);
 const float BALL_RADIUS = 12.5f;
 
 namespace curiosity {
@@ -23,9 +23,9 @@ namespace curiosity {
     }
 
     void Game::Init() {
-        ResourceManager::loadProgram((shaderDir()+"/sprite.vs").c_str(),
-                                     (shaderDir()+"/sprite.fs").c_str(),
-                                     NULL, "sprite");
+        std::cout << ">>>>Game init ..." << std::endl << std::endl;
+
+        ResourceManager::loadProgram("/sprite.vs","/sprite.fs", NULL, "sprite");
         TransMat4 projection = TransMat4::ortho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
         Program spriteProgram = ResourceManager::getProgram("sprite");
         spriteProgram.use();
@@ -54,11 +54,25 @@ namespace curiosity {
         // 加载球
         Vec2 ballPos = playerPos + Vec2(PLAYER_SIZE.x_/2 - BALL_RADIUS, - BALL_RADIUS * 2);
         ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOSITY, ResourceManager::getTexture2D("face"));
+
+        // 加载粒子效果
+        ResourceManager::loadProgram("particles.vs", "particles.fs", NULL, "particle");
+        Program particlesProgram = ResourceManager::getProgram("particle");
+        particlesProgram.use();
+        particlesProgram.setInt("sprite", 0);
+        particlesProgram.setTransMat4("projection", projection);
+        ResourceManager::loadTexture("particle.png", GL_TRUE, "particle");
+        particles = new ParticleGenerator(
+                    ResourceManager::getProgram("particle"),
+                    ResourceManager::getTexture2D("particle"), 500);
+
+        std::cout << ">>>>Game init finished" << std::endl << std::endl;
     }
 
     void Game::Update(float dt) {
         ball->move(dt, this->width);
         doCollisions();
+        particles->update(dt, *ball, 2, Vec2(ball->radius/2, ball->radius/2));
     }
 
 
@@ -91,6 +105,7 @@ namespace curiosity {
                                  Vec2(0, 0), Vec2(width, height), 0.0f);
             levels[level-1].draw(*renderer);
             player->draw(*renderer);
+            particles->draw();
             ball->draw(*renderer);
         }
     }
@@ -138,9 +153,9 @@ namespace curiosity {
                         ball->velocity.y_ = -1.0f * ball->velocity.y_;
                         float penetration = ball->radius  - std::abs(diffVector.y_);
                         if (dir == UP)
-                            ball->position.y_ += penetration;
-                        else
                             ball->position.y_ -= penetration;
+                        else
+                            ball->position.y_ += penetration;
                     }
                 }
             }

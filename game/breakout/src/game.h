@@ -6,6 +6,7 @@
 #include "gamelevel.h"
 #include "gameobject.h"
 #include "ballobject.h"
+#include "particlegenerator.h"
 
 namespace curiosity {
     namespace breakout {
@@ -51,6 +52,7 @@ namespace curiosity {
         curiosity::graphics::SpriteRender *renderer;
         curiosity::graphics::GameObject *player;
         curiosity::graphics::BallObject *ball;
+        curiosity::graphics::ParticleGenerator *particles;
     };
 
     }

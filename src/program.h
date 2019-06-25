@@ -3,7 +3,9 @@
 #include "graphicsglobal.h"
 #include "shader.h"
 #include "transmat4.h"
+#include "vec2.h"
 #include "vec3.h"
+#include "vec4.h"
 #include <vector>
 #include <string>
 
@@ -28,6 +30,8 @@ namespace curiosity {
         void setFloat(const std::string &name, float value) const;
         void setTransMat4(const std::string &name, TransMat4 &mat4);
         void setVec3(const std::string &name, Vec3 &vec3);
+        void setVector2f(const std::string &name, const Vec2 &vec2);
+        void setVector4f(const std::string &name, const Vec4 &vec4);
 
     public:
         GLuint id;

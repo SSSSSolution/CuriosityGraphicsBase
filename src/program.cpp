@@ -67,6 +67,14 @@ namespace curiosity {
         glUniform3f(glGetUniformLocation(id, name.c_str()), vec3.x_, vec3.y_, vec3.z_);
     }
 
+    void Program::setVector2f(const string &name, const Vec2 &vec2) {
+        glUniform2f(glGetUniformLocation(id, name.c_str()), vec2.x_, vec2.y_);
+    }
+
+    void Program::setVector4f(const string &name, const Vec4 &vec4) {
+        glUniform4f(glGetUniformLocation(id, name.c_str()), vec4.x, vec4.y, vec4.z, vec4.w);
+    }
+
     }
 }
 

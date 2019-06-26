@@ -8,6 +8,8 @@
 #include "shader.h"
 #include "scene.h"
 #include "transmat4.h"
+#include "ft2build.h"
+#include FT_FREETYPE_H
 
 //using namespace sb7;
 using namespace curiosity::graphics;
@@ -38,40 +40,10 @@ public:
 
     virtual void startup()
     {
-        std::cout << "=====================" << std::endl;
-        std::string vertexShaderPath = shaderDir() +"/vertex_shader";
-        std::string fragmentShaderPath = shaderDir() +"/fragment_shader";
-        std::cout << "vertxShaderPath" << vertexShaderPath << std::endl;
-        Shader vertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
-        Shader fragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
-        vertexShader.compile();
-        fragmentShader.compile();
-        vector<Shader> shaders;
-        shaders.push_back(vertexShader);
-        shaders.push_back(fragmentShader);
-        program = new Program;
-        std::cout << "create Program finished" << std::endl;
-        program->linkShaders(shaders);
-
-
-        vector<LightSource *> lights;
-        DirLight *dirLight1 = new DirLight;
-        DirLight *dirLight2 = new DirLight;
-        dirLight2->direction_ = Vec3(0.0f, 0.0f, 1.0f);
-        dirLight2->specular_ = Vec3(1.0f, 1.0f, 1.0f);
-        DirLight *dirLight3 = new DirLight;
-        dirLight3->direction_ = Vec3(0.0f, 1.0f, 0.0f);
-        DirLight *dirLight4 = new DirLight;
-        dirLight4->direction_ = Vec3(0.0f, -1.0f, 0.0f);
-
-        PointLight *pointLight1 = new PointLight;
-
-        spotLight1 = new SpotLight;
-
-        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
-
-        scene.addLightSource(spotLight1);
-        scene.addModel(model);
+        FT_Library ft;
+        if (FT_Init_FreeType(&ft))
+            std::cout << "Error::FreetypeL: could not init freetype library" << std::endl;
+        FT_Face face;
 
         fov = 45.0f;
         camera.moveSpeed_ = 0.25f;
@@ -98,14 +70,6 @@ public:
                      fov, 0.1f, 1000.0f);
         modelMat = TransMat4::translation(0.0f, 0.0f, -1.0f);
 
-        program->setTransMat4("model", modelMat);
-        program->setTransMat4("view", viewMat);
-        program->setTransMat4("project", projectMat);
-        program->setVec3("viewPos", camera.position_);
-        spotLight1->position_ = camera.position_;
-        spotLight1->direction_ = camera.getFront();
-
-        scene.draw(*program);
     }
 
     virtual void onKey(int button, int action)
@@ -143,14 +107,7 @@ public:
 private:
     FPSCamera camera;
     float fov;
-    Model *model;
-
-    Program *program;
     TransMat4 projectMat, modelMat, viewMat;
-    SpotLight *spotLight1;
-    Scene scene;
 };
 
 DECLARE_MAIN(my_application);
-
-

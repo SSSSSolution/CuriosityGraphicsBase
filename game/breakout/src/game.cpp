@@ -14,7 +14,7 @@ namespace curiosity {
     namespace breakout {
 
     Game::Game(unsigned int width, unsigned int height)
-        : state(GAME_ACTIVE), keys(), width(width), height(height), renderer(NULL) {
+        : state(GAME_ACTIVE), keys(), width(width), height(height), renderer(NULL), shakeTime(0.0f) {
     }
 
     Game::~Game() {
@@ -66,6 +66,9 @@ namespace curiosity {
                     ResourceManager::getProgram("particle"),
                     ResourceManager::getTexture2D("particle"), 500);
 
+        // 后期处理
+        ResourceManager::loadProgram("post_processing.vs", "post_processing.fs", NULL, "postprocessing");
+        effects = new PostProcessor(ResourceManager::getProgram("postprocessing"),width, height);
         std::cout << ">>>>Game init finished" << std::endl << std::endl;
     }
 
@@ -73,6 +76,12 @@ namespace curiosity {
         ball->move(dt, this->width);
         doCollisions();
         particles->update(dt, *ball, 2, Vec2(ball->radius/2, ball->radius/2));
+        if (shakeTime > 0.0f) {
+            shakeTime -= dt;
+            if (shakeTime <= 0.0f) {
+                effects->shake = false;
+            }
+        }
     }
 
 
@@ -101,12 +110,15 @@ namespace curiosity {
 
     void Game::Render() {
         if (state == GAME_ACTIVE) {
-            renderer->drawSprite(ResourceManager::getTexture2D("background"),
-                                 Vec2(0, 0), Vec2(width, height), 0.0f);
-            levels[level-1].draw(*renderer);
-            player->draw(*renderer);
-            particles->draw();
-            ball->draw(*renderer);
+            effects->beginRender();
+                renderer->drawSprite(ResourceManager::getTexture2D("background"),
+                                     Vec2(0, 0), Vec2(width, height), 0.0f);
+                levels[level-1].draw(*renderer);
+                player->draw(*renderer);
+                particles->draw();
+                ball->draw(*renderer);
+            effects->endRender();
+            effects->render(glfwGetTime());
         }
     }
 
@@ -138,8 +150,13 @@ namespace curiosity {
             if (!box.destroyed) {
                 Collision collision = checkCollision(*ball, box);
                 if (std::get<0>(collision)) {
-                    if (!box.isSolid)
+                    if (!box.isSolid) {
                         box.destroyed = true;
+                    } else {
+                        effects->shake = true;
+                        shakeTime = 0.05f;
+                    }
+
                     Direction dir = std::get<1>(collision);
                     Vec2 diffVector = std::get<2>(collision);
                     if (dir == LEFT || dir == RIGHT) {
@@ -198,28 +215,3 @@ namespace curiosity {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -32,6 +32,9 @@ namespace curiosity {
         void setVec3(const std::string &name, Vec3 &vec3);
         void setVector2f(const std::string &name, const Vec2 &vec2);
         void setVector4f(const std::string &name, const Vec4 &vec4);
+        void set1fv(const std::string &name, GLuint size, const GLfloat *data);
+        void set2fv(const std::string &name, GLuint size, const GLfloat *data);
+        void set1iv(const std::string &name, GLuint size, const GLint *data);
 
     public:
         GLuint id;

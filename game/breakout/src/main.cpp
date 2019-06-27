@@ -51,7 +51,7 @@ public:
     {
         deltaTime = currentTime - lastFrame;
         lastFrame = currentTime;
-//        std::cout << deltaTime << std::endl;
+        std::cout << deltaTime << std::endl;
         BreakOut.ProcessInput(deltaTime);
         BreakOut.Update(deltaTime);
 

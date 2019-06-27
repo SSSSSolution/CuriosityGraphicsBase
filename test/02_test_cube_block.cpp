@@ -10,7 +10,6 @@
 #include "transmat4.h"
 #include "drawable_object/cubeblock.h"
 
-
 //using namespace sb7;
 using namespace curiosity::graphics;
 using namespace std;

@@ -15,27 +15,16 @@
 
 namespace curiosity {
     namespace graphics {
-    class Character;
-    class CharacterFactory;
 
     class TextRenderer {
     public:
-        TextRenderer(const char *fontPath);
-        virtual ~TextRenderer() = 0;
-        virtual void renderText(std::string text, float x, float y, float scale, Vec3 color) = 0;
+        TextRenderer(const char *fontPath, CharacterFactory *factory);
+        virtual ~TextRenderer();
+        virtual void renderText(std::wstring text, float x, float y, float scale, Vec3 color) = 0;
 
     protected:
         Font *font;
-    };
-
-    class Character {
-    public:
-        virtual ~Character() = 0;
-    };
-
-    class CharacterFactory {
-    public:
-        virtual Character *createCharacter(const std::string &fontPath, wchar_t ch);
+        CharacterFactory *factory;
     };
 
     }

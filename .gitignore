@@ -2,6 +2,7 @@ bin/
 lib/
 build/
 font/
+!shader/font
 
 # CMake files
 Makefile

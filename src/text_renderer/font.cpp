@@ -1,24 +1,21 @@
 #include "font.h"
+
 using namespace std;
 
 namespace curiosity {
     namespace graphics {
 
-    Font::Font(const char *font)
+    Font::Font(const char *font, CharacterFactory *factory)
         : factory(factory) {
         fontPath = fontDir() + font;
     }
 
     Font::~Font() {
         for (auto iter : characters) {
-            if (*iter) {
-                delete (*iter);
+            if (iter.second) {
+                delete (iter.second);
             }
         }
-    }
-
-    void Font::setFactory(CharacterFactory *fac) {
-        factory = fac;
     }
 
     Character *Font::getCharacter(wchar_t c) {
@@ -28,8 +25,9 @@ namespace curiosity {
         if (iter != characters.end()) {
             character = characters[c];
         } else {
+            cout << c << endl;
             character = factory->createCharacter(fontPath, c);
-            characters.insert(pair<string, Character *>(c, character));
+            characters.insert(pair<wchar_t, Character *>(c, character));
         }
         return character;
     }

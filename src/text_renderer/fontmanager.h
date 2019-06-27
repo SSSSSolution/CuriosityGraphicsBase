@@ -13,9 +13,9 @@ namespace curiosity {
 
     class FontManager {
     public:
-        FontManager *instance();
+        static FontManager *instance();
         ~FontManager();
-        Font *getFont(const std::string &name);
+        Font *getFont(const char *name, CharacterFactory *factory);
 
     private:
         static FontManager *fontManager;

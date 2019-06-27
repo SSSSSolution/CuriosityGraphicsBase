@@ -16,17 +16,17 @@ namespace curiosity {
 
     FontManager::~FontManager() {
         for (auto iter : fonts)
-            delete *iter;
+            delete iter.second;
     }
 
-    Font *FontManager::getFont(const std::string &name) {
+    Font *FontManager::getFont(const char *name, CharacterFactory *factory) {
         Font *font;
         auto iter = fonts.find(name);
         if (iter == fonts.end()) {
-            font = new Font(name);
-            fonts.insert(make_pair<string, Font*>(name, font));
+            font = new Font(name, factory);
+            fonts.insert(pair<string, Font*>(name, font));
         } else {
-            font = *iter;
+            font = (*iter).second;
         }
 
         return font;

@@ -15,6 +15,7 @@
  */
 
 #include <map>
+#include "graphicsglobal.h"
 #include "textrenderer.h"
 #include "vec2.h"
 #include "font.h"
@@ -28,14 +29,13 @@ namespace curiosity {
 
     class TTTextRenderer : public TextRenderer {
     public:
-        TTTextRenderer(const char *fontPath);
+        TTTextRenderer(const char *fontPath, float width, float height);
         virtual ~TTTextRenderer();
         virtual void renderText(std::wstring text, float x, float y, float scale, Vec3 color);
 
     private:
         Program program;
         GLuint VAO, VBO;
-        Font *font;
         TTCharacterFactory *charFactory;
     };
 

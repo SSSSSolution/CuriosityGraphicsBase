@@ -14,12 +14,13 @@
 
 namespace curiosity {
     namespace graphics {
+    class Character;
+    class CharacterFactory;
 
     class Font {
     public:
-        Font(const char *font);
-        void setFactory(CharacterFactory *fac);
-        virtual void ~Font();
+        Font(const char *font, CharacterFactory *factory);
+        virtual ~Font();
 
         Character *getCharacter(wchar_t c);
 
@@ -27,6 +28,17 @@ namespace curiosity {
         CharacterFactory *factory;
         std::map<wchar_t, Character *> characters;
         std::string fontPath;
+    };
+
+    class Character {
+    public:
+        virtual ~Character() {}
+    };
+
+    class CharacterFactory {
+    public:
+        virtual ~CharacterFactory() {}
+        virtual Character *createCharacter(const std::string &fontPath, wchar_t ch) = 0;
     };
 
     }

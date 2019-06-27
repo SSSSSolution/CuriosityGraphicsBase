@@ -24,6 +24,8 @@ namespace curiosity {
 
     std::string modelDir();
 
+    std::string fontDir();
+
     // math extern
     float clamp(float value, float min, float max);
 

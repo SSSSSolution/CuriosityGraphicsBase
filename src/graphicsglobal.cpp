@@ -25,6 +25,10 @@ namespace curiosity {
         return (rootDir() + "/model/");
     }
 
+    string fontDir() {
+        return (rootDir() + "/font/");
+    }
+
     float clamp(float value, float minValue, float maxValue) {
         return max(minValue, min(maxValue, value));
     }

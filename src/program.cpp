@@ -87,6 +87,10 @@ namespace curiosity {
         glUniform1iv(glGetUniformLocation(id, name.c_str()), size, data);
     }
 
+    void Program::set3f(const string &name, float x, float y, float z) {
+        glUniform3f(glGetUniformLocation(id, name.c_str()), x, y, z);
+    }
+
     }
 }
 

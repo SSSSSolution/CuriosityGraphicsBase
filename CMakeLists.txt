@@ -8,7 +8,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include/")
 include_directories("${PROJECT_SOURCE_DIR}/src/")
 link_directories("${PROJECT_SOURCE_DIR}/lib")
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -g")
+SET(CMAKE_CXX_FLAGS "${CMAKE_X_FLAGS} -std=c++0x -g")
 
 #INCLUDE_DIRECTORIES(./include)
 add_subdirectory(./src)

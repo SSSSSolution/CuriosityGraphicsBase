@@ -9,7 +9,7 @@ namespace curiosity {
     namespace graphics {
 
     std::map<string, Texture2D> ResourceManager::textures;
-    std::map<string, Program>    ResourceManager::programs;
+    std::map<string, Program>   ResourceManager::programs;
 
     Program ResourceManager::loadProgram(const GLchar *vShaderFile, const GLchar *fShaderFile, const GLchar *gShaderFile, string name) {
         programs[name] = loadProgramFromFile(vShaderFile, fShaderFile, gShaderFile);

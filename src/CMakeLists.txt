@@ -1,7 +1,8 @@
 aux_source_directory(. SRC_LIST)
 aux_source_directory(./drawable_object SRC_LIST)
+aux_source_directory(./text_renderer SRC_LIST)
 
-set(COMMON_LIBS glfw3 X11 Xrandr Xinerama Xi Xxf86vm XCursor GL rt dl pthread)
+set(COMMON_LIBS freetype glfw3 X11 Xrandr Xinerama Xi Xxf86vm XCursor GL rt dl pthread)
 
 add_library(CuriosityGraphicsBase SHARED ${SRC_LIST})
 set_target_properties(CuriosityGraphicsBase PROPERTIES VERSION 1.0.0 SOVERSION 0)

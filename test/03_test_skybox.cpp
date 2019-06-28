@@ -12,6 +12,8 @@
 #include "stb_image.h"
 #include "drawable_object/cubeblock.h"
 #include "drawable_object/skybox.h"
+#include "resourcemanager.h"
+#include "text_renderer/tttextrenderer.h"
 
 
 //using namespace sb7;
@@ -43,40 +45,14 @@ public:
 
     virtual void startup()
     {
-        char *root = getenv("PROJECT_ROOT");
-        std::string rootDir(root);
-        std::string vertexShaderPath = shaderDir() +"/cubeblock_vertex_shader";
-        std::string fragmentShaderPath = shaderDir() +"/cubeblock_fragment_shader";
-        Shader vertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
-        Shader fragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
-        vertexShader.compile();
-        fragmentShader.compile();
-        vector<Shader> shaders;
-        shaders.push_back(vertexShader);
-        shaders.push_back(fragmentShader);
-        cubeProgram = new Program;
-        cubeProgram->use();
-        std::cout << "create Program finished" << std::endl;
-        cubeProgram->linkShaders(shaders);
 
-        vertexShaderPath = shaderDir() +"/vertex_shader";
-        fragmentShaderPath =shaderDir() +"/fragment_shader";
-        Shader modelVertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
-        Shader modelfragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
-        modelVertexShader.compile();
-        modelfragmentShader.compile();
-        vector<Shader> modelShaders;
-        modelShaders.push_back(modelVertexShader);
-        modelShaders.push_back(modelfragmentShader);
-        modelProgram = new Program;
-        modelProgram->use();
-        std::cout << "create Program finished" << std::endl;
-        modelProgram->linkShaders(modelShaders);
+        cubeProgram = ResourceManager::loadProgram("/cubeblock_vertex_shader", "/cubeblock_fragment_shader", NULL, "cubeblock");
+        modelProgram = ResourceManager::loadProgram("/vertex_shader", "/fragment_shader", NULL, "model");
 
         spotLight1 = new SpotLight;
 
-//        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
-        model = new Model("/home/hunagwei/study/computer_graphics/my_computer_graphics/src/model/nanosuit/nanosuit.obj");
+        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
+//        model = new Model("/home/hunagwei/study/computer_graphics/my_computer_graphics/src/model/nanosuit/nanosuit.obj");
 
         scene.addLightSource(spotLight1);
         scene.addModel(model);
@@ -94,10 +70,12 @@ public:
         cubeBlock4.init();
         cubeBlock4.position_ = Vec3(0.0f, 0.0f, -128.0f);
 
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
-//        glEnable(GL_CULL_FACE);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
@@ -110,18 +88,10 @@ public:
             skyboxDir() + "/skybox1/back.jpg"
         };
         skybox = Skybox::create(paths);
-        vertexShaderPath = shaderDir() +"/skybox_vertex_shader";
-        fragmentShaderPath = shaderDir() +"/skybox_fragment_shader";
-        Shader skyboxVertexShader = Shader(vertexShaderPath.c_str(), GL_VERTEX_SHADER);
-        Shader skyboxfragmentShader = Shader(fragmentShaderPath.c_str(), GL_FRAGMENT_SHADER);
-        skyboxVertexShader.compile();
-        skyboxfragmentShader.compile();
-        vector<Shader> skyboxShaders;
-        skyboxShaders.push_back(skyboxVertexShader);
-        skyboxShaders.push_back(skyboxfragmentShader);
-        skyboxProgram = new Program;
-        skyboxProgram->use();
-        skyboxProgram->linkShaders(skyboxShaders);
+        skyboxProgram = ResourceManager::loadProgram("/skybox_vertex_shader", "/skybox_fragment_shader", NULL, "skybox");
+
+        fpsKeepTime = 0.05f;
+        textRenderer = new TTTextRenderer("NotoSansCJK-Bold.ttc", info.windowWidth, info.windowHeight);
         std::cout << "create Program finished" << std::endl;
 
     }
@@ -142,51 +112,60 @@ public:
                      fov, 0.1f, 1000.0f);
 
         // 绘制skybox
-        skyboxProgram->use();
+        skyboxProgram.use();
 
         skyboxViewMat = viewMat;
         skyboxViewMat.data_[12] = 0;
         skyboxViewMat.data_[13] = 0;
         skyboxViewMat.data_[14] = 0;
 
-        skyboxProgram->setTransMat4("view", skyboxViewMat);
-        skyboxProgram->setTransMat4("project", projectMat);
-        skyboxProgram->setInt("skybox", 0);
-        skybox->draw(*skyboxProgram);
+        skyboxProgram.setTransMat4("view", skyboxViewMat);
+        skyboxProgram.setTransMat4("project", projectMat);
+        skyboxProgram.setInt("skybox", 0);
+        skybox->draw(skyboxProgram);
 
 
 
-        modelProgram->use();
-        modelProgram->setTransMat4("view", viewMat);
-        modelProgram->setTransMat4("project", projectMat);
+        modelProgram.use();
+        modelProgram.setTransMat4("view", viewMat);
+        modelProgram.setTransMat4("project", projectMat);
         modelMat = TransMat4::translation(0.0f, 0.5f, 0.0f);
         TransMat4 scaleMat = TransMat4::scale(0.2f, 0.2f, 0.2f);
         modelMat =  modelMat * scaleMat;
-        modelProgram->setTransMat4("model", modelMat);
-        modelProgram->setVec3("viewPos", camera.position_);
+        modelProgram.setTransMat4("model", modelMat);
+        modelProgram.setVec3("viewPos", camera.position_);
         spotLight1->position_ = camera.position_;
         spotLight1->direction_ = camera.getFront();
-        scene.draw(*modelProgram);
+        scene.draw(modelProgram);
 
-        cubeProgram->use();
-        cubeProgram->setTransMat4("view", viewMat);
-        cubeProgram->setTransMat4("project", projectMat);
+        cubeProgram.use();
+        cubeProgram.setTransMat4("view", viewMat);
+        cubeProgram.setTransMat4("project", projectMat);
 
         modelMat = TransMat4::translation(cubeBlock1.position_);
-        cubeProgram->setTransMat4("model", modelMat);
-        cubeBlock1.draw(*cubeProgram);
+        cubeProgram.setTransMat4("model", modelMat);
+        cubeBlock1.draw(cubeProgram);
 
         modelMat = TransMat4::translation(cubeBlock2.position_);
-        cubeProgram->setTransMat4("model", modelMat);
-        cubeBlock2.draw(*cubeProgram);
+        cubeProgram.setTransMat4("model", modelMat);
+        cubeBlock2.draw(cubeProgram);
 
         modelMat = TransMat4::translation(cubeBlock3.position_);
-        cubeProgram->setTransMat4("model", modelMat);
-        cubeBlock3.draw(*cubeProgram);
+        cubeProgram.setTransMat4("model", modelMat);
+        cubeBlock3.draw(cubeProgram);
 
         modelMat = TransMat4::translation(cubeBlock4.position_);
-        cubeProgram->setTransMat4("model", modelMat);
-        cubeBlock4.draw(*cubeProgram);
+        cubeProgram.setTransMat4("model", modelMat);
+        cubeBlock4.draw(cubeProgram);
+
+        fpsKeepTime -= deltaTime;
+        if (fpsKeepTime <= 0.0f) {
+            int fps = 1/deltaTime;
+            fpsStr = "fps: " + std::to_string(fps);
+            fpsKeepTime = 0.1f;
+        }
+        textRenderer->renderText(fpsStr, 20.0f, 40.0f,
+                                  0.5f, Vec3(0.5f, 0.8f, 0.2f));
     }
 
     virtual void onKey(int button, int action)
@@ -225,7 +204,7 @@ private:
     float fov;
     Model *model;
 
-    Program *cubeProgram, *modelProgram, *skyboxProgram;
+    Program cubeProgram, modelProgram, skyboxProgram;
     TransMat4 projectMat, modelMat, viewMat, skyboxViewMat;
     SpotLight *spotLight1;
     Scene scene;
@@ -233,6 +212,9 @@ private:
     GLuint cubemapTexture;
     GLuint skyboxVAO_, skyboxVBO_;
     std::shared_ptr<Skybox> skybox;
+    TTTextRenderer *textRenderer;
+    std::string fpsStr;
+    float fpsKeepTime;
 };
 
 DECLARE_MAIN(my_application);

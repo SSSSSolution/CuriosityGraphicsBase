@@ -1,5 +1,5 @@
 #ifndef GRAPHICS_TEXT_RENDERER_H
-#define GRAPHICS_TEXT_RENDERED_H
+#define GRAPHICS_TEXT_RENDERER_H
 
 /* Interface of text rendering.
  *
@@ -20,7 +20,7 @@ namespace curiosity {
     public:
         TextRenderer(const char *fontPath, CharacterFactory *factory);
         virtual ~TextRenderer();
-        virtual void renderText(std::wstring text, float x, float y, float scale, Vec3 color) = 0;
+        virtual void renderText(std::string text, float x, float y, float scale, Vec3 color) = 0;
 
     protected:
         Font *font;

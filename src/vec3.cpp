@@ -17,6 +17,13 @@ namespace curiosity {
         return ret;
     }
 
+    Vec3 Vec3::operator =(const Vec3 &other) {
+        x_ = other.x_;
+        y_ = other.y_;
+        z_ = other.z_;
+        return *this;
+    }
+
     Vec3 Vec3::operator -(const Vec3 &other) const {
         Vec3 ret(x_ - other.x_, y_ - other.y_, z_ - other.z_);
         return ret;
@@ -25,6 +32,11 @@ namespace curiosity {
     Vec3 Vec3::operator +(const Vec3 &other) const {
         Vec3 ret(x_ + other.x_, y_ + other.y_, z_ + other.z_);
         return ret;
+    }
+
+    Vec3 Vec3::operator +=(const Vec3 &other) {
+        *this = *this + other;
+        return *this;
     }
 
     Vec3 Vec3::operator *(const Vec3 &other) const {

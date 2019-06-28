@@ -18,7 +18,7 @@ namespace curiosity {
         }
     }
 
-    Character *Font::getCharacter(wchar_t c) {
+    Character *Font::getCharacter(char c) {
         Character *character;
 
         auto iter = characters.find(c);
@@ -27,7 +27,7 @@ namespace curiosity {
         } else {
             cout << c << endl;
             character = factory->createCharacter(fontPath, c);
-            characters.insert(pair<wchar_t, Character *>(c, character));
+            characters.insert(pair<char, Character *>(c, character));
         }
         return character;
     }

@@ -22,11 +22,11 @@ namespace curiosity {
         Font(const char *font, CharacterFactory *factory);
         virtual ~Font();
 
-        Character *getCharacter(wchar_t c);
+        Character *getCharacter(char c);
 
     private:
         CharacterFactory *factory;
-        std::map<wchar_t, Character *> characters;
+        std::map<char, Character *> characters;
         std::string fontPath;
     };
 
@@ -38,7 +38,7 @@ namespace curiosity {
     class CharacterFactory {
     public:
         virtual ~CharacterFactory() {}
-        virtual Character *createCharacter(const std::string &fontPath, wchar_t ch) = 0;
+        virtual Character *createCharacter(const std::string &fontPath, char ch) = 0;
     };
 
     }

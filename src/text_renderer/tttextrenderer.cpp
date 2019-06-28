@@ -11,11 +11,10 @@ namespace curiosity {
     TTTextRenderer::TTTextRenderer(const char *fontPath, float width, float height)
         : TextRenderer(fontPath, new TTCharacterFactory()) {
         program = ResourceManager::loadProgram("/font/ttfont.vs", "/font/ttfont.fs", NULL, "ttfont");
-        TransMat4 projection = TransMat4::ortho(0.0f, width,
-                                                0.0f, height,
-                                                -1.0f, 1.0f);
+        TransMat4 projection = TransMat4::ortho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
         program.use();
         program.setTransMat4("projection", projection);
+        program.setInt("text", 0);
         // 初始化VAO
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -32,31 +31,34 @@ namespace curiosity {
     }
 
 
-    void TTTextRenderer::renderText(std::wstring text, float x, float y, float scale, Vec3 color) {
+    void TTTextRenderer::renderText(std::string text, float x, float y, float scale, Vec3 color) {
         program.use();
         program.set3f("textColor", color.x_, color.y_, color.z_);
+        glDisable(GL_DEPTH_TEST);
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(VAO);
 
-        wstring::const_iterator c;
+        string::const_iterator c;
         for (c = text.begin(); c != text.end(); ++c) {
             TTCharacter *ch = dynamic_cast<TTCharacter*>(font->getCharacter(*c));
             assert(ch != NULL);
 
             float xpos = x + ch->bearing.x_ * scale;
-            float ypos = y - (ch->size.y_ - ch->bearing.y_) * scale;
+//            float ypos = y - (ch->size.y_ - ch->bearing.y_) * scale;
+            float ypos = y + (dynamic_cast<TTCharacter*>(font->getCharacter('H'))->bearing.y_
+                         -ch->bearing.y_) * scale; // ?
 
             float w = ch->size.x_ * scale;
             float h = ch->size.y_ * scale;
 
             float vertices[6][4] = {
-                { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos,     ypos,       0.0f, 1.0f },
-                { xpos + w, ypos,       1.0f, 1.0f },
+                { xpos,     ypos + h,   0.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 0.0f },
+                { xpos,     ypos,       0.0f, 0.0f },
 
-                { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos + w, ypos,       1.0f, 1.0f },
-                { xpos + w, ypos + h,   1.0f, 1.0f }
+                { xpos,     ypos + h,   0.0f, 1.0f },
+                { xpos + w, ypos + h,   1.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 0.0f }
             };
             glBindTexture(GL_TEXTURE_2D, ch->textureID);
             glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -67,9 +69,10 @@ namespace curiosity {
         }
         glBindVertexArray(0);
         glBindTexture(GL_TEXTURE_2D, 0);
+        glEnable(GL_DEPTH_TEST);
     }
 
-    TTCharacter *TTCharacterFactory::createCharacter(const std::string &fontPath, wchar_t ch) {
+    TTCharacter *TTCharacterFactory::createCharacter(const std::string &fontPath, char ch) {
         std::cout << __func__ << endl;
         FT_Library ft;
         if (FT_Init_FreeType(&ft))
@@ -116,24 +119,3 @@ namespace curiosity {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

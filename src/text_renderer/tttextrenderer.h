@@ -31,7 +31,7 @@ namespace curiosity {
     public:
         TTTextRenderer(const char *fontPath, float width, float height);
         virtual ~TTTextRenderer();
-        virtual void renderText(std::wstring text, float x, float y, float scale, Vec3 color);
+        virtual void renderText(std::string text, float x, float y, float scale, Vec3 color);
 
     private:
         Program program;
@@ -52,7 +52,7 @@ namespace curiosity {
 
     class TTCharacterFactory : public CharacterFactory {
     public:
-        virtual TTCharacter *createCharacter(const std::string &fontPath, wchar_t ch);
+        virtual TTCharacter *createCharacter(const std::string &fontPath, char ch);
     };
 
     }

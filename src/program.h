@@ -28,7 +28,7 @@ namespace curiosity {
         void setBool(const std::string &name, bool value) const;
         void setInt(const std::string &name, int value) const;
         void setFloat(const std::string &name, float value) const;
-        void setTransMat4(const std::string &name, TransMat4 &mat4);
+        void setTransMat4(const std::string &name, const TransMat4 &mat4);
         void setVec3(const std::string &name, Vec3 &vec3);
         void setVector2f(const std::string &name, const Vec2 &vec2);
         void setVector4f(const std::string &name, const Vec4 &vec4);

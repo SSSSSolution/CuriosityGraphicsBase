@@ -59,7 +59,7 @@ namespace curiosity {
         glUniform1f(glGetUniformLocation(id, name.c_str()), value);
     }
 
-    void Program::setTransMat4(const string &name, TransMat4 &mat4) {
+    void Program::setTransMat4(const string &name, const TransMat4 &mat4) {
         glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, mat4.data_);
     }
 

@@ -59,7 +59,8 @@ public:
         camera.mouseSensitivity_ = 0.025f;
 
         textRenderer = NULL;
-        textRenderer = new TTTextRenderer("ukai.ttc", 800, 600);
+        textRenderer = new TTTextRenderer("NotoSansCJK-Bold.ttc", 800, 600);
+        fpsKeepTime  = 0.1f;
 
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
@@ -78,13 +79,13 @@ public:
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        int fps = 1/deltaTime;
-        std::wstring str = L"ss";
-        std::string str2 = u8"你好啊";
-
-        std::cout << str2 << std::endl;
-        assert(textRenderer != NULL);
-        textRenderer->renderText(str, 25.0f, 25.0f,
+        fpsKeepTime -= deltaTime;
+        if (fpsKeepTime <= 0.0f) {
+            int fps = 1/deltaTime;
+            fpsStr = "fps: " + std::to_string(fps);
+            fpsKeepTime = 0.1f;
+        }
+        textRenderer->renderText(fpsStr, 250.0f, 250.0f,
                                   1.0f, Vec3(0.5f, 0.8f, 0.2f));
     }
 
@@ -127,6 +128,8 @@ private:
     GLuint VAO, VBO;
     Program textProgram;
     TTTextRenderer *textRenderer;
+    float fpsKeepTime;
+    std::string fpsStr;
 };
 
 DECLARE_MAIN(my_application);

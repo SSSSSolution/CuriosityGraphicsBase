@@ -14,7 +14,8 @@
 #include "drawable_object/skybox.h"
 #include "resourcemanager.h"
 #include "text_renderer/tttextrenderer.h"
-
+#include "drawable_object/cubeobject.h"
+#include "drawable_object/gravity.h"
 
 //using namespace sb7;
 using namespace curiosity::graphics;
@@ -48,6 +49,9 @@ public:
 
         cubeProgram = ResourceManager::loadProgram("/cubeblock_vertex_shader", "/cubeblock_fragment_shader", NULL, "cubeblock");
         modelProgram = ResourceManager::loadProgram("/vertex_shader", "/fragment_shader", NULL, "model");
+        cubeObjectProgram = ResourceManager::loadProgram("/drawobject/cubeobject.vs",
+                                                         "/drawobject/cubeobject.fs", NULL, "cubeobject");
+        ResourceManager::loadTexture("container2.png", GL_TRUE, "container2");
 
         spotLight1 = new SpotLight;
 
@@ -78,7 +82,6 @@ public:
         glEnable(GL_DEPTH_TEST);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-
         std::vector<string> paths{
             skyboxDir() + "/skybox1/right.jpg",
             skyboxDir() + "/skybox1/left.jpg",
@@ -94,6 +97,7 @@ public:
         textRenderer = new TTTextRenderer("NotoSansCJK-Bold.ttc", info.windowWidth, info.windowHeight);
         std::cout << "create Program finished" << std::endl;
 
+        gravity.setG(9.8f);
     }
 
     virtual void render(double currentTime)
@@ -158,6 +162,16 @@ public:
         cubeProgram.setTransMat4("model", modelMat);
         cubeBlock4.draw(cubeProgram);
 
+        gravity.setDeltaTime(deltaTime);
+        gravity.notify();
+        cubeObjectProgram.use();
+        cubeObjectProgram.setTransMat4("view", viewMat);
+        cubeObjectProgram.setTransMat4("project", projectMat);
+        for (auto cubeobject : cubeobjects) {
+            cubeobject->go(deltaTime);
+            cubeobject->draw();
+        }
+
         fpsKeepTime -= deltaTime;
         if (fpsKeepTime <= 0.0f) {
             int fps = 1/deltaTime;
@@ -178,6 +192,16 @@ public:
             camera.processKeyboard(FPSCamera::LEFT);
         } else if (button == GLFW_KEY_D && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
             camera.processKeyboard(FPSCamera::RIGHT);
+        }
+    }
+
+    virtual void onMouseButton(int button, int action) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+            CubeObject *obj = new CubeObject(camera.position_, Vec3(0.1f, 0.1f,0.1f), &cubeObjectProgram);
+            obj->setVelocity(camera.getFront()*50.0f);
+            obj->setTexture("container2");
+            gravity.attach(obj);
+            cubeobjects.push_back(obj);
         }
     }
 
@@ -204,7 +228,7 @@ private:
     float fov;
     Model *model;
 
-    Program cubeProgram, modelProgram, skyboxProgram;
+    Program cubeProgram, modelProgram, skyboxProgram, cubeObjectProgram;
     TransMat4 projectMat, modelMat, viewMat, skyboxViewMat;
     SpotLight *spotLight1;
     Scene scene;
@@ -215,6 +239,9 @@ private:
     TTTextRenderer *textRenderer;
     std::string fpsStr;
     float fpsKeepTime;
+    Gravity gravity;
+
+    std::vector<CubeObject *> cubeobjects;
 };
 
 DECLARE_MAIN(my_application);

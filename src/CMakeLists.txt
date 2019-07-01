@@ -1,7 +1,6 @@
 aux_source_directory(. SRC_LIST)
 aux_source_directory(./drawable_object SRC_LIST)
 aux_source_directory(./text_renderer SRC_LIST)
-aux_source_directory(./resource SRC_LIST)
 
 set(COMMON_LIBS freetype glfw3 X11 Xrandr Xinerama Xi Xxf86vm XCursor GL rt dl pthread)
 

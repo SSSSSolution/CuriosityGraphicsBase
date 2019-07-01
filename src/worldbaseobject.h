@@ -10,14 +10,15 @@ namespace curiosity {
     class WorldBaseObject {
     public:
         WorldBaseObject(const Vec3 &position, const Vec3 &scaleFactor, Program *program);
-        virtual ~WorldBaseObject() = 0;
+        virtual ~WorldBaseObject() {}
 
-        virtual void translate(const Vec3 &trans);
+        virtual void move(const Vec3 &trans);
         virtual void scale(const Vec3 &scaleFactor);
 
         virtual void draw() = 0;
 
-    private:
+        const Vec3 &getPosition() const { return position; }
+    protected:
         void setModelMatrix();
 
     protected:

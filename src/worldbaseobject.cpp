@@ -9,7 +9,7 @@ namespace curiosity {
         setModelMatrix();
     }
 
-    void WorldBaseObject::translate(const Vec3 &trans) {
+    void WorldBaseObject::move(const Vec3 &trans) {
         position += trans;
         setModelMatrix();
     }
@@ -20,6 +20,7 @@ namespace curiosity {
     }
 
     void WorldBaseObject::setModelMatrix() {
+        program->use();
         TransMat4 modelMat = TransMat4::translation(position);
         TransMat4 scaleMat = TransMat4::scale(scaleFactor);
         program->setTransMat4("model", modelMat * scaleMat);

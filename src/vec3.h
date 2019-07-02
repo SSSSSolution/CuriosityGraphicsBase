@@ -1,5 +1,6 @@
 #ifndef GRAPHICS_VEC3_H
 #define GRAPHICS_VEC3_H
+#include <iostream>
 
 namespace curiosity {
     namespace graphics {
@@ -7,6 +8,8 @@ namespace curiosity {
     class Vec3 {
     public:
         Vec3(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+
+        float length();
 
         Vec3 normalize() const;
 
@@ -29,6 +32,9 @@ namespace curiosity {
     public:
         float x_, y_, z_;
     };
+
+    Vec3 operator *(float v, const Vec3 &vec);
+    std::ostream &operator <<(std::ostream &os, const Vec3 &vec);
 
     }
 }

@@ -9,6 +9,10 @@ namespace curiosity {
         : x_(x), y_(y), z_(z) {
     }
 
+    float Vec3::length() {
+        return sqrt(x_*x_ + y_*y_ + z_*z_);
+    }
+
     Vec3 Vec3::normalize() const {
         float sum = x_ * x_ + y_ * y_ + z_ * z_;
         Vec3 ret(x_ < 0 ? -1.0f * sqrt(x_*x_/sum) :  sqrt(x_*x_/sum),
@@ -54,11 +58,44 @@ namespace curiosity {
     }
 
     Vec3 Vec3::cross(const Vec3 &other) const {
-        Vec3 ret(y_ * other.z_ - z_ * other.y_,
-                 z_ * other.x_ - x_ * other.z_,
-                 x_ * other.y_ - y_ * other.x_);
-        return ret;
+        return Vec3(y_ * other.z_ - z_ * other.y_,
+                    z_ * other.x_ - x_ * other.z_,
+                    x_ * other.y_ - y_ * other.x_);
+    }
+
+    Vec3 operator *(float v, const Vec3 &vec) {
+        return (vec * v);
+    }
+
+    std::ostream &operator <<(ostream &os, const Vec3 &vec) {
+        return os << "<" << vec.x_ << ", " << vec.y_ << ", " << vec.z_ << ">";
     }
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

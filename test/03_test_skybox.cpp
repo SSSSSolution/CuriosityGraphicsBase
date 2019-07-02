@@ -16,6 +16,9 @@
 #include "text_renderer/tttextrenderer.h"
 #include "drawable_object/cubeobject.h"
 #include "drawable_object/gravity.h"
+#include "math/line3.h"
+#include "math/point3.h"
+#include "math/line3segment.h"
 
 //using namespace sb7;
 using namespace curiosity::graphics;
@@ -98,6 +101,26 @@ public:
         std::cout << "create Program finished" << std::endl;
 
         gravity.setG(9.8f);
+
+        // test line
+        Point3 p(Vec3(0.0f, 0.0f, 0.0f));
+        Vec3 direction(1.0f, 0.0f, 0.0f);
+        Line3 line(p, direction);
+        Point3 q(Vec3(-1.0f, 1.0f, 0.0f));
+        Point3 closest = line.closestPoint(q);
+        std::cout << "closest" << closest.vec().x_ << ", " << closest.vec().y_ << ", " << closest.vec().z_ << std::endl;
+        std::cout << line.closestDistanceSquared(q) << std::endl;
+        Line3Segment segment(p, direction);
+        closest = segment.closestPoint(q);
+        std::cout << "closest" << closest.vec().x_ << ", " << closest.vec().y_ << ", " << closest.vec().z_ << std::endl;
+        std::cout << segment.closestDistanceSquared(q) << std::endl;
+        Point3 p1(Vec3(1.0f, 0.0f, -1.0f));
+        Vec3 direction1(0.0f, 1.0f, 0.0f);
+        Line3 line2(p1, direction1);
+        std::pair<Point3, Point3> points = line.closestPoint(line2);
+        std::cout << points.first << std::endl;
+        std::cout << points.second << std::endl;
+
     }
 
     virtual void render(double currentTime)

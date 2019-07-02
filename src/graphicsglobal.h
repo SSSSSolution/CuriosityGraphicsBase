@@ -2,6 +2,7 @@
 #define GRAPHICS_GLOBAL_H
 
 #include <cmath>
+#include <utility>
 #include <string>
 #include <iostream>
 //#include "glad/glad.h"
@@ -10,6 +11,9 @@
 #include "vec2.h"
 
 #define RADIANS(r)              (r*3.14159f/180.0f)
+
+#define FLOAT_EPS               (1e-6)
+#define IS_FLOAT_ZERO(f)        (fabs(f) <= FLOAT_EPS)
 
 namespace curiosity {
     namespace graphics {

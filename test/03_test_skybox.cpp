@@ -16,10 +16,10 @@
 #include "text_renderer/tttextrenderer.h"
 #include "drawable_object/cubeobject.h"
 #include "drawable_object/gravity.h"
-#include "math/line3.h"
-#include "math/point3.h"
-#include "math/line3segment.h"
-
+#include "geometry/line3.h"
+#include "geometry/point3.h"
+#include "geometry/line3segment.h"
+#include "drawable_object/ballobject.h"
 //using namespace sb7;
 using namespace curiosity::graphics;
 using namespace std;
@@ -54,6 +54,7 @@ public:
         modelProgram = ResourceManager::loadProgram("/vertex_shader", "/fragment_shader", NULL, "model");
         cubeObjectProgram = ResourceManager::loadProgram("/drawobject/cubeobject.vs",
                                                          "/drawobject/cubeobject.fs", NULL, "cubeobject");
+        ballProgram = ResourceManager::loadProgram("/drawobject/ballobject.vs", "/drawobject/ballobject.fs", NULL, "ballobject");
         ResourceManager::loadTexture("container2.png", GL_TRUE, "container2");
 
         spotLight1 = new SpotLight;
@@ -194,6 +195,19 @@ public:
             cubeobject->go(deltaTime);
             cubeobject->draw();
         }
+        ballProgram.use();
+        ballProgram.setTransMat4("view", viewMat);
+        ballProgram.setTransMat4("project", projectMat);
+
+        list<BallObject *>::const_iterator iter;
+        for (iter = ballobjects.begin(); iter != ballobjects.end(); iter++) {
+            (*iter)->go(deltaTime);
+            (*iter)->draw();
+            if ((*iter)->getPosition().y_ <= 0.0f) {
+                std::cout << (*iter)->getPosition() << std::endl;
+                iter = ballobjects.erase(iter);
+            }
+        }
 
         fpsKeepTime -= deltaTime;
         if (fpsKeepTime <= 0.0f) {
@@ -202,6 +216,11 @@ public:
             fpsKeepTime = 0.1f;
         }
         textRenderer->renderText(fpsStr, 20.0f, 40.0f,
+                                  0.5f, Vec3(0.5f, 0.8f, 0.2f));
+        statusStr = "position: <" + std::to_string(camera.position_.x_)
+                + ", " + std::to_string(camera.position_.y_) + ", "
+                + std::to_string(camera.position_.z_) + ">, pitch: " + std::to_string(camera.pitch_);
+        textRenderer->renderText(statusStr, 20.0f, 80.0f,
                                   0.5f, Vec3(0.5f, 0.8f, 0.2f));
     }
 
@@ -225,6 +244,13 @@ public:
             obj->setTexture("container2");
             gravity.attach(obj);
             cubeobjects.push_back(obj);
+        }
+        if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+            BallObject *obj = new BallObject(camera.position_, Vec3(0.1f, 0.1f, 0.1f), &ballProgram);
+            obj->setVeocity(camera.getFront()*50.0f);
+            gravity.attach(obj);
+            ballobjects.push_back(obj);
+            std::cout << "camera.pitch" << camera.pitch_ << std::endl;
         }
     }
 
@@ -251,7 +277,7 @@ private:
     float fov;
     Model *model;
 
-    Program cubeProgram, modelProgram, skyboxProgram, cubeObjectProgram;
+    Program cubeProgram, modelProgram, skyboxProgram, cubeObjectProgram, ballProgram;
     TransMat4 projectMat, modelMat, viewMat, skyboxViewMat;
     SpotLight *spotLight1;
     Scene scene;
@@ -260,11 +286,12 @@ private:
     GLuint skyboxVAO_, skyboxVBO_;
     std::shared_ptr<Skybox> skybox;
     TTTextRenderer *textRenderer;
-    std::string fpsStr;
+    std::string fpsStr, statusStr;
     float fpsKeepTime;
     Gravity gravity;
 
     std::vector<CubeObject *> cubeobjects;
+    std::list<BallObject *> ballobjects;
 };
 
 DECLARE_MAIN(my_application);

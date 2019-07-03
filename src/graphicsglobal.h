@@ -10,10 +10,12 @@
 #include "GLFW/glfw3.h"
 #include "vec2.h"
 
-#define RADIANS(r)              (r*3.14159f/180.0f)
+#define PI                      (3.14159f)
+#define RADIANS(r)              (r*PI/180.0f)
 
 #define FLOAT_EPS               (1e-6)
 #define IS_FLOAT_ZERO(f)        (fabs(f) <= FLOAT_EPS)
+#define IS_FLOAT_EQUAL(a, b)    IS_FLOAT_ZERO(a-b)
 
 namespace curiosity {
     namespace graphics {

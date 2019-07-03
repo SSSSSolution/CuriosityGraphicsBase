@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_LINE3_H
 #define GRAPHICS_LINE3_H
 #include "graphicsglobal.h"
-#include "math/point3.h"
+#include "geometry/point3.h"
 #include "vec3.h"
 
 namespace curiosity {
@@ -17,9 +17,9 @@ namespace curiosity {
         // 和点Q的最近距离
         float closestDistanceSquared(const Point3 &Q);
         // 返回离直线最近的点
-        std::pair<Point3, Point3> closestPoint(const Line3 &line);
+        std::pair<Point3, Point3> closestPoint(const Line3 &line) const;
         // 返回两条直线的最近距离
-        float closestDistanceSquared(const Line3 &line);
+        float closestDistanceSquared(const Line3 &line) const;
 
     private:
         Point3 origin;

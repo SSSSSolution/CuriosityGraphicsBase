@@ -1,4 +1,4 @@
-#include "math/line3.h"
+#include "geometry/line3.h"
 #include "math.h"
 using namespace std;
 
@@ -20,7 +20,7 @@ namespace curiosity {
         return (w.dot(w) - w.dot(direction) * w.dot(direction) / direction.dot(direction));
     }
 
-    std::pair<Point3, Point3> Line3::closestPoint(const Line3 &line) {
+    std::pair<Point3, Point3> Line3::closestPoint(const Line3 &line) const {
         Point3 point1, point2;
         Vec3 w0 = origin - line.origin;
         float a = direction.dot(direction);
@@ -40,5 +40,50 @@ namespace curiosity {
         return make_pair(point1, point2);
     }
 
+    float Line3::closestDistanceSquared(const Line3 &line) const {
+        Vec3 w0 = origin - line.origin;
+        float a = direction.dot(direction);
+        float b = direction.dot(line.direction);
+        float c = line.direction.dot(line.direction);
+        float d = direction.dot(w0);
+        float e = line.direction.dot(w0);
+
+        Vec3 wc;
+        float denom = a*c - b*b;
+        if (IS_FLOAT_ZERO(denom)) {
+            wc = w0 - (e/c) * line.direction;
+        } else {
+            wc = w0 + ((b*e - c*d)/denom) * direction
+                    - ((a*e - b*d)/denom) * line.direction;
+        }
+        return wc.dot(wc);
+    }
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

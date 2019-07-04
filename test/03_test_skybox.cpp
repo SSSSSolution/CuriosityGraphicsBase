@@ -84,7 +84,7 @@ public:
 
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         std::vector<string> paths{
             skyboxDir() + "/skybox1/right.jpg",

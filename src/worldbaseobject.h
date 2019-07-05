@@ -18,6 +18,8 @@ namespace curiosity {
         virtual void draw() = 0;
 
         const Vec3 &getPosition() const { return position; }
+        Program *getProgram() { return program; }
+
     protected:
         void setModelMatrix();
 

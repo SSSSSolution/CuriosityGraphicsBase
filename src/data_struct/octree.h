@@ -46,9 +46,12 @@ namespace curiosity {
             bool isLeaf;
         };
 
+        void build(float *r);
         void build(float *r, std::vector<NodeContent *> &contents);
         void clearTree();
+        void insert(NodeContent *content);
         void insert(TreeNode *root, NodeContent *content);
+        void traversal();
         void traversal(TreeNode *root);
 
     protected:

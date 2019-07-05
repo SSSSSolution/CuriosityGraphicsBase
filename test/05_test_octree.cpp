@@ -9,13 +9,14 @@
 #include "lightsource.h"
 #include "program.h"
 #include "shader.h"
-#include "scene.h"
 #include "transmat4.h"
 #include "resourcemanager.h"
 #include <map>
 #include "text_renderer/tttextrenderer.h"
 #include "data_struct/octree.h"
 #include "drawable_object/skybox.h"
+#include "scene_managing/scene_v1/scenev1.h"
+#include "scene_managing/scene_v1/scenev1factory.h"
 
 //using namespace sb7;
 using namespace curiosity::graphics;
@@ -84,7 +85,10 @@ public:
         skybox = Skybox::create(paths);
         skyboxProgram =  ResourceManager::loadProgram("/skybox_vertex_shader", "/skybox_fragment_shader", nullptr, "skybox");
 
+        ballProgram = ResourceManager::loadProgram("/drawobject/ballobject.vs", "/drawobject/ballobject.fs", nullptr, "ballobject");
         std::cout << "startup finished" << std::endl;
+
+        scenev1 = new SceneV1(new SceneV1Factory());
     }
 
     virtual void render(double currentTime)
@@ -112,6 +116,10 @@ public:
         skyboxProgram.setTransMat4("project", projectMat);
         skyboxProgram.setInt("skybox", 0);
         skybox->draw(skyboxProgram);
+
+        // 场景开始工作
+        scenev1->setMat(projectMat, viewMat);
+        scenev1->exec();
     }
 
     virtual void onKey(int button, int action)
@@ -150,13 +158,15 @@ private:
     FPSCamera camera;
     float fov;
     TransMat4 projectMat, modelMat, viewMat, skyboxViewMat;
-    Program textProgram, skyboxProgram;
+    Program textProgram, skyboxProgram, ballProgram;
     TTTextRenderer *textRenderer;
 
     float fpsKeepTime;
     std::string fpsStr;
 
     std::shared_ptr<Skybox> skybox;
+
+    SceneV1 *scenev1;
 };
 
 DECLARE_MAIN(my_application);

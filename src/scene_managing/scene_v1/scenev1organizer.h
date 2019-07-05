@@ -9,13 +9,16 @@ namespace curiosity {
 
     class SceneV1Organizer : public SceneOrganizer {
     public:
-        SceneV1Organizer() {}
+        SceneV1Organizer();
 
         virtual void addObject(WorldBaseObject *obj);
         virtual void removeObject(WorldBaseObject *obj);
+        virtual void exec();
+
+        void setScene(SceneV1 *scene);
 
     private:
-        SceneV1Tree ocTree;
+        SceneV1Tree *ocTree;
     };
 
     }

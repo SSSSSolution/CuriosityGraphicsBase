@@ -3,7 +3,7 @@
 namespace curiosity {
     namespace graphics {
 
-    SceneOrganizer *SceneFactory::createSceneOrganizer() {
+    SceneOrganizer *SceneV1Factory::createSceneOrganizer() {
         return new SceneV1Organizer;
     }
 

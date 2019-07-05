@@ -16,5 +16,9 @@ namespace curiosity {
         sceneOrganizer->removeObject(obj);
     }
 
+    void Scene::exec() {
+        sceneOrganizer->exec();
+    }
+
     }
 }

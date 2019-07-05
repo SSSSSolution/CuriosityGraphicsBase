@@ -15,6 +15,12 @@ namespace curiosity {
 
     }
 
+    void OcTree::build(float *r) {
+        if (root)
+            clearTree();
+        root = new TreeNode(r);
+    }
+
     void OcTree::build(float *r, vector<NodeContent *> &contents) {
         if (root)
             clearTree();
@@ -28,9 +34,15 @@ namespace curiosity {
 
     }
 
+    void OcTree::insert(NodeContent *content) {
+        insert(root, content);
+    }
+
     // 插入新的节点
     void OcTree::insert(TreeNode *root, NodeContent *content) {
         assert(root);
+        assert(content);
+
         int quad = root->whichQuadrant(content);
         if (root->dir[quad]) {
             insert(root->dir[quad], content);
@@ -47,6 +59,10 @@ namespace curiosity {
             root->dir[quad] = new TreeNode(r);
             root->dir[quad]->addContentList(content);
         }
+    }
+
+    void OcTree::traversal() {
+        traversal(root);
     }
 
     void OcTree::traversal(TreeNode *root) {

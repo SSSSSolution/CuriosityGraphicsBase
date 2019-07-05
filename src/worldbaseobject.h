@@ -17,6 +17,7 @@ namespace curiosity {
 
         virtual void draw() = 0;
 
+        void setPosition(const Vec3 &pos) { position = pos; }
         const Vec3 &getPosition() const { return position; }
         Program *getProgram() { return program; }
 

@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_OCTREE_H
 #define GRAPHICS_OCTREE_H
 #include <vector>
+#include <string.h>
 /*
  * 先实现空间点的搜索树
  * 有体积的先不实现
@@ -11,103 +12,52 @@ namespace curiosity {
 
     class OcTree {
     public:
-//        typedef struct TreeNode TreeNode;
-//        typedef struct NodeContent NodeContent;
+        OcTree(int maxContentSize);
+        virtual ~OcTree();
 
         struct NodeContent {
+            NodeContent() {}
+            ~NodeContent() {}
             void *data;
             float x, y, z;
             NodeContent *next;
         };
 
         struct TreeNode {
-            TreeNode() {
-                a = b = c = d = e = f = g = h = NULL;
-                nodeContent = NULL;
-            }
+            TreeNode(float *r);
+            ~TreeNode();
 
-            enum Region {
-                A, B, C, D, E, F, G, H
-            };
-            Region whichRegion(NodeContent *content) {
-                if (xMax - content->x <= content->x - xMin) {
-                    if (yMax - content->y <= content->y - yMin) {
-                        if (zMax - content->z <= content->z - zMin) {
-                            return A;
-                        } else {
-                            return E;
-                        }
-                    } else {
-                        if (zMax - content->z <= content->z - zMin) {
-                            return B;
-                        } else {
-                            return F;
-                        }
-                    }
-                } else {
-                    if (yMax - content->y <= content->y - yMin) {
-                        if (zMax - content->z <= content->z - zMin) {
-                            return D;
-                        } else {
-                            return H;
-                        }
-                    } else {
-                        if (zMax - content->z <= content->z - zMin) {
-                            return C;
-                        } else {
-                            return G;
-                        }
-                    }
-                }
-            }
-
-            std::vector<float> getNewRegion(Region r) {
-                std::vector<float> ret;
-                switch (r) {
-                case A:
-                    ret.push_back(xMax);
-                    ret.push_back(yMax);
-                    ret.push_back(zMax);
-                    ret.push_back((xMax + xMin)/2.0f);
-                    ret.push_back((yMax + yMin)/2.0f);
-                    ret.push_back((zMax + zMin)/2.0f);
-                    break;
-                case B:
-                    break;
-                case C:
-                    break;
-                case D:
-                    break;
-                case E:
-                    break;
-                case F:
-                    break;
-                case G:
-                    break;
-                case H:
-                    break;
-                }
-            }
-
-            TreeNode *a, *b, *c, *d,
-                     *e, *f, *g, *h;
-            NodeContent *nodeContent;
-            float xMin, xMax, yMin, yMax, zMin, zMax;
+            void clearContent();
+            // 内容位置在这个结点的哪个象限上
+            int whichQuadrant(NodeContent *content);
+            // 计算出某个象限的子节点的区域范围
+            void quadrantRange(int dir, float *out);
+            // 向结点加入内容
+            void addContentList(NodeContent *content);
+            // 拆分成子空间
+            void split();
+            // ８个象限的子树
+            TreeNode *dir[8];
+            //　结点代表的区域范围，xMin, xMax, yMin, yMax, zMin, zMax
+            float range[6];
+            // 这个结点包含的内容链表
+            NodeContent *content;
+            int contentSize;
+            bool isLeaf;
         };
 
-        OcTree();
-        ~OcTree();
-
-        void build(float xMin, float xMax,
-                   float yMin, float yMax,
-                   float zMin, float zMax,
-                   const std::vector<NodeContent *> &nodeContents);
+        void build(float *r, std::vector<NodeContent *> &contents);
+        void clearTree();
         void insert(TreeNode *root, NodeContent *content);
+        void traversal(TreeNode *root);
 
-    private:
+    protected:
+        virtual void process(TreeNode *node) {}
+
+    public:
         TreeNode *root;
+        int maxContentSize;
     };
-
 
     }
 }

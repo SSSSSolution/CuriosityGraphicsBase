@@ -5,7 +5,7 @@ namespace curiosity {
 
     SceneV1Organizer::SceneV1Organizer() {
         ocTree = new SceneV1Tree(1);
-        float r[6] = { -50.0f, 50.0f, -50.0f, 50.0f, -50.0f, 50.0f};
+        float r[6] = { -10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f};
         ocTree->build(r);
     }
 

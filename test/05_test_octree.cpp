@@ -130,7 +130,7 @@ public:
 
         list<BallObject *>::const_iterator iter;
         for (iter = ballObjects.begin(); iter != ballObjects.end(); iter++) {
-            (*iter)->setVeocity((*iter)->getVelocity()*0.99f);
+            (*iter)->setVeocity((*iter)->getVelocity()*0.5f);
             (*iter)->go(deltaTime);
             (*iter)->draw();
             if (IS_FLOAT_ZERO((*iter)->getVelocity().dot((*iter)->getVelocity()))) {
@@ -191,7 +191,7 @@ public:
 
     virtual void onMouseButton(int button, int action) {
         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-            BallObject *obj = new BallObject(camera.position_, Vec3(1.0f, 1.0f, 1.0f), &ballProgram);
+            BallObject *obj = new BallObject(camera.position_ + camera.getFront()*10.0f, Vec3(0.1f, 0.1f, 0.1f), &ballProgram);
             obj->setVeocity(camera.getFront()*100.0f);
 //            scenev1->addObject(obj);
             ballObjects.push_back(obj);

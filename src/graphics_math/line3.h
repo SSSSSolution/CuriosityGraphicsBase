@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_LINE3_H
 #define GRAPHICS_LINE3_H
 #include "graphicsglobal.h"
-#include "geometry/point3.h"
+#include "point3.h"
 #include "vec3.h"
 
 namespace curiosity {

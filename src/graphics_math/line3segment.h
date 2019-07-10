@@ -1,6 +1,6 @@
 #ifndef GRAPHICS_LINE3_SEGMENT_H
 #define GRAPHICS_LINE3_SEGMENT_H
-#include "geometry/point3.h"
+#include "point3.h"
 #include "vec3.h"
 
 namespace curiosity {

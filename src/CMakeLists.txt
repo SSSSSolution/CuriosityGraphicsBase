@@ -1,10 +1,9 @@
 aux_source_directory(. SRC_LIST)
-aux_source_directory(./drawable_object SRC_LIST)
+aux_source_directory(./world_object SRC_LIST)
 aux_source_directory(./text_renderer SRC_LIST)
-aux_source_directory(./geometry SRC_LIST)
 aux_source_directory(./scene_managing SRC_LIST)
 aux_source_directory(./scene_managing/scene_v1 SRC_LIST)
-aux_source_directory(./data_struct SRC_LIST)
+aux_source_directory(./graphics_math SRC_LIST)
 
 set(COMMON_LIBS freetype glfw3 X11 Xrandr Xinerama Xi Xxf86vm XCursor GL rt dl pthread)
 

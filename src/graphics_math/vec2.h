@@ -23,7 +23,7 @@ namespace curiosity {
         float dot(const Vec2 &other) const;
 
     public:
-        float x_, y_;
+        float x, y;
     };
 
     }

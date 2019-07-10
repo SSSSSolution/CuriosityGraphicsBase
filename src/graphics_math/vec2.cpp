@@ -6,44 +6,44 @@ namespace curiosity {
     namespace graphics {
 
     Vec2::Vec2(float x, float y)
-        : x_(x), y_(y) {
+        : x(x), y(y) {
     }
 
     Vec2 Vec2::normalize() const {
-        float sum = x_ * x_ + y_ * y_;
-        return Vec2(x_ < 0 ? -1.0f * sqrt(x_ * x_ / sum) : sqrt(x_ * x_ / sum),
-                    y_ < 0 ? -1.0f * sqrt(y_ * y_ / sum) : sqrt(y_ * y_ / sum));
+        float sum = x * x + y * y;
+        return Vec2(x < 0 ? -1.0f * sqrt(x * x / sum) : sqrt(x * x / sum),
+                    y < 0 ? -1.0f * sqrt(y * y / sum) : sqrt(y * y / sum));
     }
 
     Vec2 Vec2::operator -(const Vec2 &other) const {
-        Vec2 ret(x_ - other.x_, y_ - other.y_);
+        Vec2 ret(x - other.x, y - other.y);
         return ret;
     }
 
     Vec2 Vec2::operator -=(const Vec2 &other) {
-        x_ -= other.x_;
-        y_ -= other.y_;
+        x -= other.x;
+        y -= other.y;
         return *this;
     }
 
     Vec2 Vec2::operator +(const Vec2 &other) const {
-        Vec2 ret(x_ + other.x_, y_ + other.y_);
+        Vec2 ret(x + other.x, y + other.y);
         return ret;
     }
 
     Vec2 Vec2::operator +=(const Vec2 &other) {
-        x_ += other.x_;
-        y_ += other.y_;
+        x += other.x;
+        y += other.y;
         return *this;
     }
 
     Vec2 Vec2::operator *(float v) const {
-        Vec2 ret(x_ * v, y_ * v);
+        Vec2 ret(x * v, y * v);
         return ret;
     }
 
     float Vec2::dot(const Vec2 &other) const {
-        return x_ * other.x_ + y_ * other.y_;
+        return x * other.x + y * other.y;
     }
 
     }

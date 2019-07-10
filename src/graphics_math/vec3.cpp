@@ -6,35 +6,35 @@ namespace curiosity {
     namespace graphics {
 
     Vec3::Vec3(float x, float y, float z)
-        : x_(x), y_(y), z_(z) {
+        : x(x), y(y), z(z) {
     }
 
     float Vec3::length() {
-        return sqrt(x_*x_ + y_*y_ + z_*z_);
+        return sqrt(x*x + y*y + z*z);
     }
 
     Vec3 Vec3::normalize() const {
-        float sum = x_ * x_ + y_ * y_ + z_ * z_;
-        Vec3 ret(x_ < 0 ? -1.0f * sqrt(x_*x_/sum) :  sqrt(x_*x_/sum),
-                 y_ < 0 ? -1.0f * sqrt(y_*y_/sum) :  sqrt(y_*y_/sum),
-                 z_ < 0 ? -1.0f * sqrt(z_*z_/sum) :  sqrt(z_*z_/sum));
+        float sum = x * x + y * y + z * z;
+        Vec3 ret(x < 0 ? -1.0f * sqrt(x*x/sum) :  sqrt(x*x/sum),
+                 y < 0 ? -1.0f * sqrt(y*y/sum) :  sqrt(y*y/sum),
+                 z < 0 ? -1.0f * sqrt(z*z/sum) :  sqrt(z*z/sum));
         return ret;
     }
 
     Vec3 Vec3::operator =(const Vec3 &other) {
-        x_ = other.x_;
-        y_ = other.y_;
-        z_ = other.z_;
+        x = other.x;
+        y = other.y;
+        z = other.z;
         return *this;
     }
 
     Vec3 Vec3::operator -(const Vec3 &other) const {
-        Vec3 ret(x_ - other.x_, y_ - other.y_, z_ - other.z_);
+        Vec3 ret(x - other.x, y - other.y, z_ - other.z);
         return ret;
     }
 
     Vec3 Vec3::operator +(const Vec3 &other) const {
-        Vec3 ret(x_ + other.x_, y_ + other.y_, z_ + other.z_);
+        Vec3 ret(x + other.x, y + other.y, z + other.z);
         return ret;
     }
 
@@ -44,23 +44,23 @@ namespace curiosity {
     }
 
     Vec3 Vec3::operator *(const Vec3 &other) const {
-        Vec3 ret(x_ * other.x_, y_ * other.y_, z_ * other.z_);
+        Vec3 ret(x * other.x, y * other.y, z * other.z_);
         return ret;
     }
 
     Vec3 Vec3::operator *(float v) const {
-        Vec3 ret(x_ * v, y_ * v, z_ * v);
+        Vec3 ret(x * v, y * v, z * v);
         return ret;
     }
 
     float Vec3::dot(const Vec3 &other) const {
-        return x_ * other.x_ + y_ * other.y_ + z_ * other.z_;
+        return x * other.x + y * other.y + z * other.z;
     }
 
     Vec3 Vec3::cross(const Vec3 &other) const {
-        return Vec3(y_ * other.z_ - z_ * other.y_,
-                    z_ * other.x_ - x_ * other.z_,
-                    x_ * other.y_ - y_ * other.x_);
+        return Vec3(y * other.z - z * other.y,
+                    z * other.x - x * other.z,
+                    x * other.y - y * other.x);
     }
 
     Vec3 operator *(float v, const Vec3 &vec) {
@@ -68,7 +68,7 @@ namespace curiosity {
     }
 
     std::ostream &operator <<(ostream &os, const Vec3 &vec) {
-        return os << "<" << vec.x_ << ", " << vec.y_ << ", " << vec.z_ << ">";
+        return os << "<" << vec.x << ", " << vec.y << ", " << vec.z << ">";
     }
 
     }

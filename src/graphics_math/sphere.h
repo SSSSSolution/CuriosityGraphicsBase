@@ -7,7 +7,7 @@
  * Date:    2019-7-3
  */
 #include "graphicsglobal.h"
-#include "geometry/point3.h"
+#include "point3.h"
 #include <vector>
 
 namespace curiosity {

@@ -1,4 +1,4 @@
-#include "geometry/line3.h"
+#include "line3.h"
 #include "math.h"
 using namespace std;
 

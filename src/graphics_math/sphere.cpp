@@ -1,4 +1,4 @@
-#include "geometry/sphere.h"
+#include "sphere.h"
 #include "vec3.h"
 using namespace std;
 

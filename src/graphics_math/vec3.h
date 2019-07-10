@@ -30,7 +30,7 @@ namespace curiosity {
         Vec3 cross(const Vec3 &other) const;
 
     public:
-        float x_, y_, z_;
+        float x, y, z;
     };
 
     Vec3 operator *(float v, const Vec3 &vec);
